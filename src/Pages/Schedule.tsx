@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { URL } from "../Constant/constants";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 interface ShowDetailProps {
   id: string;
@@ -15,6 +16,8 @@ interface ShowDetailProps {
 
 function Schedule() {
   const [scheduleItem, setScheduleItem] = useState<ShowDetailProps[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`${URL}/schedule`).then((res) => setScheduleItem(res.data));
@@ -31,12 +34,18 @@ function Schedule() {
             <div
               key={item.id}
               className="bg-[#181e26] shadow rounded-lg overflow-hidden hover:scale-105 transition-transform cursor-pointer"
+              onClick={() =>
+                navigate(
+                  `${item.id}/${
+                    item.show?.name ? item.show.name.replace(/\s+/g, "-") : ""
+                  }`
+                )
+              }
             >
               <img
                 src={
                   item.show.image?.medium ||
-                  item.show.image?.original ||
-                  "https://via.placeholder.com/210x295?text=No+Image"
+                  item.show.image?.original
                 }
                 alt={item.show.name || ""}
                 className="w-full h-auto object-cover"

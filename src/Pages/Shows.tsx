@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
+import { URL } from "../Constant/constants";
 
 type ShowsProps = {
   id: number;
@@ -14,11 +15,10 @@ type ShowsProps = {
 
 function Shows() {
   const [shows, setShows] = useState<ShowsProps[]>([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("https://api.tvmaze.com/shows")
+      .get(`${URL}/shows`)
       .then((response) => {
         setShows(response.data);
       })
@@ -38,21 +38,22 @@ function Shows() {
             <div
               key={item.id}
               className="bg-[#181e26] shadow rounded-lg overflow-hidden hover:scale-105 transition-transform cursor-pointer"
-              onClick={(() => navigate(`${item.id}`))}
             >
-              <img
-                src={
-                  item.image?.medium ||
-                  item.image?.original ||
-                  "https://via.placeholder.com/210x295?text=No+Image"
-                }
-                alt={item.name || ""}
-                className="w-full h-auto object-cover"
-              />
-              {/* Optionally show show name */}
-              <div className="p-2 font-semibold text-white/70 truncate">
-                {item.name}
-              </div>
+              <Link to={`/shows/${item.id}/${item.name.replace(/\s+/g, "-")}`}>
+                <img
+                  src={
+                    item.image?.medium ||
+                    item.image?.original ||
+                    "https://via.placeholder.com/210x295?text=No+Image"
+                  }
+                  alt={item.name || ""}
+                  className="w-full h-auto object-cover"
+                />
+                {/* Optionally show show name */}
+                <div className="p-2 font-semibold text-white/70 truncate">
+                  {item.name}
+                </div>
+              </Link>
             </div>
           ))}
         </div>

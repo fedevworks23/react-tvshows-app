@@ -7,8 +7,8 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const linksList = [
-    { path: "Shows", name: "Shows" },
-    { path: "Schedule", name: "Schedule" },
+    { path: "shows", name: "Shows" },
+    { path: "schedule", name: "Schedule" },
   ];
 
   return (
