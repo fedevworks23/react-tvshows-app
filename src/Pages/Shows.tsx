@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { URL } from "../Constant/constants";
+import './Shows.css'
 
 type ShowsProps = {
   id: number;
@@ -37,7 +38,7 @@ function Shows() {
           {shows.map((item: ShowsProps) => (
             <div
               key={item.id}
-              className="bg-[#181e26] shadow rounded-lg overflow-hidden hover:scale-105 transition-transform cursor-pointer"
+              className="bg-[#181e26] shadow rounded-lg overflow-hidden hover:scale-105 transition-transform animate-list cursor-pointer"
             >
               <Link to={`/shows/${item.id}/${item.name.replace(/\s+/g, "-")}`}>
                 <img
