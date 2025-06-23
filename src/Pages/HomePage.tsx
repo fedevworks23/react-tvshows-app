@@ -1,8 +1,11 @@
 
+import Slider from "./Slider";
 function HomePage() {
   return (
-    <div>HomePage</div>
-  )
+    <>
+      <Slider />
+    </>
+  );
 }
 
-export default HomePage
+export default HomePage;
