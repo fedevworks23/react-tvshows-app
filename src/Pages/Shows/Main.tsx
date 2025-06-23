@@ -1,23 +1,12 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
-import { NavLink, useParams } from "react-router";
-import LoaderComponent from "../components/LoaderComponent";
-import { URL } from "../Constant/constants";
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router";
+import LoaderComponent from "../../components/LoaderComponent";
+import { URL } from "../../Constant/constants";
 
-const ShowDetail = () => {
-  const { id } = useParams();
+function Main() {
+  const {id, name} = useOutletContext<{id: string, name: string}>();
   const [show, setShow] = useState<any>(null);
-
-  const showDetailsNavbar = [
-    { path: "main", title: "Main" },
-    { path: "episodes", title: "Episodes" },
-    { path: "seasons", title: "Seasons" },
-    { path: "cast", title: "Cast" },
-    { path: "crew", title: "Crew" },
-    { path: "characters", title: "Characters" },
-    { path: "gallery", title: "Gallery" },
-    { path: "news", title: "News" },
-  ];
 
   useEffect(() => {
     axios.get(`${URL}/shows/${id}`).then((res) => setShow(res.data));
@@ -32,21 +21,11 @@ const ShowDetail = () => {
   }
 
   return (
-    <div className="bg-white px-2 md:px-8 py-8 min-h-screen">
-      {/* Main header */}
-      <h1 className="mb-2 font-light text-gray-900 text-4xl">{show.name}</h1>
-      {/* Tabs */}
-      <div className="flex gap-2 mb-4">
-        {showDetailsNavbar.map((navMenu, index) => (
-          <NavLink key={index} to={`/shows/${id}/episodes`}>
-            <button className="bg-gray-200 shadow-sm px-4 py-1 rounded text-gray-500 hover:text-gray-900 cursor-pointer">
-              {navMenu.title}
-            </button>
-          </NavLink>
-        ))}
-      </div>
+    <>
       {/* Responsive layout */}
+      <h1>{name}</h1>
       <div className="flex lg:flex-row flex-col gap-8">
+        
         {/* Left: Poster and actions */}
         <div className="flex flex-col items-center lg:items-start w-full">
           <div className="flex flex-row level-1">
@@ -146,25 +125,9 @@ const ShowDetail = () => {
                     <tbody>
                       <tr className="hover:bg-gray-50">
                         <td className="px-4 py-2 text-teal-700 underline cursor-pointer">
-                          4x09: Chapter Nine: The Piggyback
+                          {show._links?.previousepisode?.name || "No Next Episode"}
                         </td>
                         <td className="px-4 py-2 text-gray-600">Jul 1, 2022</td>
-                        <td className="px-4 py-2"></td>
-                      </tr>
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-4 py-2 text-teal-700 underline cursor-pointer">
-                          4x08: Chapter Eight: Papa
-                        </td>
-                        <td className="px-4 py-2 text-gray-600">Jul 1, 2022</td>
-                        <td className="px-4 py-2"></td>
-                      </tr>
-                      <tr className="hover:bg-gray-50">
-                        <td className="px-4 py-2 text-teal-700 underline cursor-pointer">
-                          4x07: Chapter Seven: The Massacre at Hawkins Lab
-                        </td>
-                        <td className="px-4 py-2 text-gray-600">
-                          May 27, 2022
-                        </td>
                         <td className="px-4 py-2"></td>
                       </tr>
                     </tbody>
@@ -196,7 +159,8 @@ const ShowDetail = () => {
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Average Runtime:</span>{" "}
-              {show.runtime || 62} minutes
+              {/* {show.runtime || 62} minutes */}
+              {show.runtime !== '' ? (show.runtim)  : ("N.A.")}
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Status:</span>{" "}
@@ -320,8 +284,8 @@ const ShowDetail = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
-};
+}
 
-export default ShowDetail;
+export default Main;

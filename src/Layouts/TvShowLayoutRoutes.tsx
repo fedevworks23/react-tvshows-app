@@ -1,25 +1,25 @@
 import { Route, Routes } from "react-router";
-// import Dashboard from "../Pages/Dashboard";
 import PageNotFound from "../Pages/PageNotFound";
-import TvShowLayout from "./TvShowLayout";
-import ShowDetails from "../Pages/ShowDetails";
+import ShowDetails from "../Pages/Shows/ShowDetails";
 import Schedule from "../Pages/Schedule";
-import Shows from "../Pages/Shows";
+import Shows from "../Pages/Shows/Shows";
 import HomePage from "../Pages/HomePage";
-import ShowEpisodes from "../Pages/ShowEpisodes";
+import Episodes from "../Pages/Shows/Episodes";
+import Seasons from "../Pages/Shows/Seasons";
+import Main from "../Pages/Shows/Main";
 
 function TvShowLayoutRoutes() {
   return (
     <>
       <Routes>
-        <Route element={<TvShowLayout />}>
-          <Route index element={<HomePage />}></Route>
-          {/* <Route index  element={<Dashboard />}></Route> */}
-          <Route path="shows" element={<Shows />}></Route>
-          <Route path="shows/:id/:name" element={<ShowDetails />}></Route>
-          <Route path={"shows/:id/:name/episodes"} element={<ShowEpisodes/>}></Route>
-          <Route path="Schedule" element={<Schedule />}></Route>
+        <Route index element={<HomePage />} />
+        <Route path="shows" element={<Shows />} />
+        <Route path="shows/:id/:name" element={<ShowDetails />}>
+          <Route path="" element={<Main />} />
+          <Route path="episodes" element={<Episodes />} />
+          <Route path="seasons" element={<Seasons />} />
         </Route>
+        <Route path="Schedule" element={<Schedule />} />
 
         <Route path={"*"} element={<PageNotFound />}></Route>
       </Routes>

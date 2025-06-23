@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import LoaderComponent from "../components/LoaderComponent";
-import { URL } from "../Constant/constants";
+import LoaderComponent from "../../components/LoaderComponent";
+import { URL } from "../../Constant/constants";
 
-function ShowEpisodes() {
+
+function Episodes() {
   const { id } = useParams();
 
   const [episodes, setEpisodes] = useState<any[]>([]);
@@ -27,7 +28,7 @@ function ShowEpisodes() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-96 text-white">
+      <div className="flex justify-center items-center text-white">
         <LoaderComponent />
       </div>
     );
@@ -73,4 +74,4 @@ function ShowEpisodes() {
   );
 }
 
-export default ShowEpisodes;
+export default Episodes;

@@ -1,3 +1,4 @@
+import { Outlet } from "react-router";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import TvShowLayoutRoutes from "./Layouts/TvShowLayoutRoutes";
@@ -8,6 +9,7 @@ function App() {
       <div>
         <Navbar />  
         <TvShowLayoutRoutes />
+        <Outlet />
       </div>
     </>
   );
