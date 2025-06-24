@@ -1,8 +1,9 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import {  NavLink } from "react-router";
-import { URL } from "../../Constant/constants";
-import './Shows.css'
+import { useEffect } from "react";
+import { NavLink } from "react-router";
+import "./Shows.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getTvShows } from "../../store/tvShowsSlice";
+import type { RootState, AppDispatch } from "../../store";
 
 type ShowsProps = {
   id: number;
@@ -15,18 +16,16 @@ type ShowsProps = {
 };
 
 function Shows() {
-  const [shows, setShows] = useState<ShowsProps[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const { results, status } = useSelector((state: RootState) => state.tvShows);
 
   useEffect(() => {
-    axios
-      .get(`${URL}/shows`)
-      .then((response) => {
-        setShows(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    dispatch(getTvShows());
+  }, [dispatch]);
+
+  if (status === "loading") return <p className="text-white">Loading...</p>;
+  if (status === "failed")
+    return <p className="text-white">Error loading TV shows.</p>;
 
   return (
     <>
@@ -35,12 +34,14 @@ function Shows() {
         <hr className="mb-6 border-[#232a36]" />
 
         <div className="gap-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {shows.map((item: ShowsProps) => (
+          {results.map((item: ShowsProps) => (
             <div
               key={item.id}
               className="bg-[#181e26] shadow rounded-lg overflow-hidden hover:scale-105 transition-transform animate-list cursor-pointer"
             >
-              <NavLink to={`/shows/${item.id}/${item.name.replace(/\s+/g, "-")}/`}>
+              <NavLink
+                to={`/shows/${item.id}/${item.name.replace(/\s+/g, "-")}/`}
+              >
                 <img
                   src={
                     item.image?.medium ||
