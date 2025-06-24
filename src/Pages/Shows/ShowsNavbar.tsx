@@ -11,7 +11,7 @@ function ShowsNavbar() {
   const [subTitle, setSubTitle] = useState<string>("");
 
   
-  const showDetailsNavbar = [
+  const ShowDetailsLayoutNavbar = [
     {
       path: "main",
       title: "Main",
@@ -70,7 +70,7 @@ function ShowsNavbar() {
       </h1>
       {/* Show Nav Menu */}
       <div className="flex gap-2 mb-4">
-        {showDetailsNavbar.map((navMenu, index) => (
+        {ShowDetailsLayoutNavbar.map((navMenu, index) => (
           <NavLink key={index} to={navMenu.route}>
             <button
               className="bg-gray-200 shadow-sm px-4 py-1 rounded text-gray-500 hover:text-gray-900 cursor-pointer"

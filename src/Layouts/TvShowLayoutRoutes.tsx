@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 import PageNotFound from "../Pages/PageNotFound";
-import ShowDetails from "../Pages/Shows/ShowDetails";
+import ShowDetailsLayout from "../Pages/Shows/ShowDetailsLayout";
 import Schedule from "../Pages/Schedule";
 import Shows from "../Pages/Shows/Shows";
 import HomePage from "../Pages/HomePage";
@@ -14,7 +14,7 @@ function TvShowLayoutRoutes() {
       <Routes>
         <Route index element={<HomePage />} />
         <Route path="shows" element={<Shows />} />
-        <Route path="shows/:id/:name" element={<ShowDetails />}>
+        <Route path="shows/:id/:name" element={<ShowDetailsLayout />}>
           <Route path="" element={<Main />} />
           <Route path="episodes" element={<Episodes />} />
           <Route path="seasons" element={<Seasons />} />
