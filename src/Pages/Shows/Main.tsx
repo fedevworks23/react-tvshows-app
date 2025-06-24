@@ -2,13 +2,31 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import LoaderComponent from "../../components/LoaderComponent";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "../../store/index";
+import type { AppDispatch, RootState } from "../../store/index";
 import { getShowById } from "../../store/tvShowsSlice";
 
 function Main() {
   const { id, name } = useParams<{ id: string; name: string }>();
   const dispatch = useDispatch<AppDispatch>();
-  const show = useSelector((state: any) => state.tvShows.showById);
+  // Define a type for the show object based on your expected data structure
+  type Show = {
+    image?: { original?: string; medium?: string };
+    name?: string;
+    summary?: string;
+    _links?: { previousepisode?: { name?: string } };
+    network?: { name?: string };
+    premiered?: string;
+    runtime?: number | string;
+    status?: string;
+    type?: string;
+    genres?: string[];
+    officialSite?: string;
+    rating?: { average?: number };
+    // Add other fields as needed
+    [key: string]: any;
+  };
+
+  const show = useSelector((state: RootState) => state.tvShows.showById) as Show;
 
   useEffect(() => {
     dispatch(getShowById(Number(id)));
