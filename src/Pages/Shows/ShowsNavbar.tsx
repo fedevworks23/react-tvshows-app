@@ -62,7 +62,7 @@ function ShowsNavbar() {
     <>
       {/* Show Title */}
       <h1 className="mb-2 text-gray-900 text-4xl">
-        {name} {subTitle}
+        {name?.replace(/[-]+/g, " ")} {subTitle}
       </h1>
       {/* Show Nav Menu */}
       <div className="flex gap-2 mb-4">
