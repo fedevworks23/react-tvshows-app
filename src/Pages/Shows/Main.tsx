@@ -8,9 +8,19 @@ function Main() {
   const {id, name} = useParams<{id: string, name: string}>();
   const [show, setShow] = useState<any>(null);
 
+  const fetchShowDetails = async (id: string) => {
+    try {
+      const response = await axios.get(`${URL}/shows/${id}`);
+      setShow(response.data);
+    } catch (error) {
+      console.error("Error fetching show details:", error);
+    }
+  }
+  
+
   useEffect(() => {
-    axios.get(`${URL}/shows/${id}`).then((res) => setShow(res.data));
-  }, [id]);
+    fetchShowDetails(id as string);
+  }, []);
 
   if (!show) {
     return (

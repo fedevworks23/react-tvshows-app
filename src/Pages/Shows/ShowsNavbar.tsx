@@ -5,11 +5,7 @@ import { NavLink, useParams } from "react-router";
 
 function ShowsNavbar() {
   const {id, name} = useParams<{ id: string; name: string }>();
-
-  console.log("id", id);
-  
   const [subTitle, setSubTitle] = useState<string>("");
-
   
   const ShowDetailsLayoutNavbar = [
     {
