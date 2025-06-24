@@ -1,28 +1,20 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import LoaderComponent from "../../components/LoaderComponent";
-import { URL } from "../../Constant/constants";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "../../store/index";
+import { getShowById } from "../../store/tvShowsSlice";
 
 function Main() {
-  const {id, name} = useParams<{id: string, name: string}>();
-  const [show, setShow] = useState<any>(null);
-
-  const fetchShowDetails = async (id: string) => {
-    try {
-      const response = await axios.get(`${URL}/shows/${id}`);
-      setShow(response.data);
-    } catch (error) {
-      console.error("Error fetching show details:", error);
-    }
-  }
-  
+  const { id, name } = useParams<{ id: string; name: string }>();
+  const dispatch = useDispatch<AppDispatch>();
+  const show = useSelector((state: any) => state.tvShows.showById);
 
   useEffect(() => {
-    fetchShowDetails(id as string);
+    dispatch(getShowById(Number(id)));
   }, []);
 
-  if (!show) {
+  if (!show || Object.keys(show).length === 0) {
     return (
       <div className="flex justify-center items-center h-96 text-white">
         <LoaderComponent />
@@ -35,7 +27,6 @@ function Main() {
       {/* Responsive layout */}
       <h1>{name}</h1>
       <div className="flex lg:flex-row flex-col gap-8">
-        
         {/* Left: Poster and actions */}
         <div className="flex flex-col items-center lg:items-start w-full">
           <div className="flex flex-row level-1">
@@ -43,8 +34,7 @@ function Main() {
               <img
                 src={
                   show.image?.original ||
-                  show.image?.medium ||
-                  "https://via.placeholder.com/210x295?text=No+Image"
+                  show.image?.medium
                 }
                 alt={show.name}
                 className="shadow-lg mb-4 rounded w-[80%] h-auto"
@@ -135,7 +125,8 @@ function Main() {
                     <tbody>
                       <tr className="hover:bg-gray-50">
                         <td className="px-4 py-2 text-teal-700 underline cursor-pointer">
-                          {show._links?.previousepisode?.name || "No Next Episode"}
+                          {show._links?.previousepisode?.name ||
+                            "No Next Episode"}
                         </td>
                         <td className="px-4 py-2 text-gray-600">Jul 1, 2022</td>
                         <td className="px-4 py-2"></td>
@@ -170,7 +161,7 @@ function Main() {
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Average Runtime:</span>{" "}
               {/* {show.runtime || 62} minutes */}
-              {show.runtime !== '' ? (show.runtim)  : ("N.A.")}
+              {show.runtime !== "" ? show.runtim : "N.A."}
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Status:</span>{" "}
