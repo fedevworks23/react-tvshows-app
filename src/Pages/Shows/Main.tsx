@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router";
+import { useParams } from "react-router";
 import LoaderComponent from "../../components/LoaderComponent";
 import { URL } from "../../Constant/constants";
 
 function Main() {
-  const {id, name} = useOutletContext<{id: string, name: string}>();
+  const {id, name} = useParams<{id: string, name: string}>();
   const [show, setShow] = useState<any>(null);
 
   useEffect(() => {

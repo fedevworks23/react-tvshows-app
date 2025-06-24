@@ -16,6 +16,7 @@ interface TvShow {
 // The slice state, with an array of results and a status string.
 interface TvShowsState {
   results: TvShow[];
+  selectedShow: null | TvShow;
   status: "idle" | "loading" | "succeeded" | "failed";
 }
 
@@ -31,6 +32,7 @@ export const getTvShows = createAsyncThunk<TvShow[], string | undefined>(
 const initialState: TvShowsState = {
   // Initialize with an empty array for results
   results: [],
+  selectedShow: null, // Initially no show is selected
   // Tracks the loading state (idle, loading, succeeded, failed).
   status: "idle",
 };
@@ -40,9 +42,14 @@ const tvShowsSlice = createSlice({
   initialState,
 
   reducers: {
+    // "setSelectedShow" Sets the currently selected TV show.
+    setSelectedShow: (state, action) => {
+      state.selectedShow = action.payload;
+    },
     // "clearTvShows" Resets the results and status to initial values.
     clearTvShows: (state) => {
       state.results = [];
+      state.selectedShow = null;
       state.status = "idle";
     },
   },
@@ -62,5 +69,7 @@ const tvShowsSlice = createSlice({
       });
   },
 });
+
+export const { setSelectedShow } = tvShowsSlice.actions;
 
 export default tvShowsSlice.reducer;

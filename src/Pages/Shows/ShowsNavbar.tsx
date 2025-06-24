@@ -1,28 +1,72 @@
-import { NavLink } from "react-router";
+import { useState } from "react";
+import { NavLink, useParams } from "react-router";
 
-interface ShowsNavbarProps {
-  title: string;
-  subTitle: string;
-  showDetailsNavbar: {
-    path: string;
-    title: string;
-    route: string;
-    subTitle: string;
-  }[];
-  setSubTitle: React.Dispatch<React.SetStateAction<string>>;
-}
 
-function ShowsNavbar({
-  title,
-  subTitle,
-  showDetailsNavbar,
-  setSubTitle,
-}: ShowsNavbarProps) {
+
+function ShowsNavbar() {
+  const {id, name} = useParams<{ id: string; name: string }>();
+
+  console.log("id", id);
+  
+  const [subTitle, setSubTitle] = useState<string>("");
+
+  
+  const showDetailsNavbar = [
+    {
+      path: "main",
+      title: "Main",
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}`,
+      subTitle: "",
+    },
+    {
+      path: "episodes",
+      title: "Episodes",
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/episodes`,
+      subTitle: " - Episodes",
+    },
+    {
+      path: "seasons",
+      title: "Seasons",
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/seasons`,
+      subTitle: " - Seasons",
+    },
+    {
+      path: "cast",
+      title: "Cast",
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/Cast`,
+      subTitle: " - Cast",
+    },
+    {
+      path: "crew",
+      title: "Crew",
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/Crew`,
+      subTitle: " - Crew",
+    },
+    {
+      path: "characters",
+      title: "Characters",
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/characters`,
+      subTitle: " - Characters",
+    },
+    {
+      path: "gallery",
+      title: "Gallery",
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/gallery`,
+      subTitle: " - Gallery",
+    },
+    {
+      path: "news",
+      title: "News",
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/news`,
+      subTitle: " - News",
+    },
+  ];
+
   return (
     <>
       {/* Show Title */}
       <h1 className="mb-2 text-gray-900 text-4xl">
-        {title} {subTitle}
+        {name} {subTitle}
       </h1>
       {/* Show Nav Menu */}
       <div className="flex gap-2 mb-4">

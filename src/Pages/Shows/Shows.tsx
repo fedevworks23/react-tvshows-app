@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { NavLink } from "react-router";
 import "./Shows.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getTvShows } from "../../store/tvShowsSlice";
+import { getTvShows, setSelectedShow } from "../../store/tvShowsSlice";
 import type { RootState, AppDispatch } from "../../store";
 
 type ShowsProps = {
@@ -41,6 +41,7 @@ function Shows() {
             >
               <NavLink
                 to={`/shows/${item.id}/${item.name.replace(/\s+/g, "-")}/`}
+                onClick={() => dispatch(setSelectedShow(item))}
               >
                 <img
                   src={
