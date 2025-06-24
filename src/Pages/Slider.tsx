@@ -20,7 +20,7 @@ function Slider() {
     if (shows.length > 5) {
       intervalRef.current = setInterval(() => {
         setCurrent((prev) => (prev + 1) % (shows.length - 4));
-      }, 3500);
+      }, 15000); // Change slide every 15 seconds
       return () => {
         if (intervalRef.current) clearInterval(intervalRef.current);
       };
@@ -90,7 +90,7 @@ function Slider() {
           <button
             key={idx}
             onClick={() => setCurrent(idx)}
-            className={`w-3 h-3 rounded-full ${current === idx ? "bg-yellow-400" : "bg-[#232a36]"}`}
+            className={`w-3 h-3 rounded-full cursor-pointer ${current === idx ? "bg-yellow-400" : "bg-[#232a36]"}`}
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}
