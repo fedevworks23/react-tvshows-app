@@ -46,12 +46,12 @@ export const getShowById = createAsyncThunk<TvShowsState["showById"], number>(
   }
 );
 
-export const getDetailsById = createAsyncThunk<[] | {}, string>(
+export const getDetailsById = createAsyncThunk<[] | {}, { id: string; navMenu: string }>(
   "tvShows/getDetailsById",
-  async (customPath: string) => {
-    const response = await fetchDetailsById(customPath);
-    console.log('Response from getDetailsById:');
-    
+  async ({ id, navMenu }) => {
+    const response = await fetchDetailsById(id, navMenu);
+    console.log("Response from getDetailsById:");
+
     return response.data;
   }
 );
@@ -69,8 +69,7 @@ const initialState: TvShowsState = {
     seasons: [],
     cast: [],
     crew: [],
-  }
-  
+  },
 };
 
 // The tvShows slice
@@ -118,18 +117,20 @@ const tvShowsSlice = createSlice({
       .addCase(getShowById.rejected, (state) => {
         state.status = "failed";
       })
+
+      // Handle fetching details by ID
+      // This is used for episodes, seasons, cast, crew, etc.
       .addCase(getDetailsById.pending, (state) => {
         state.detailsStatus = "loading";
       })
       .addCase(getDetailsById.fulfilled, (state, action) => {
         state.detailsStatus = "succeeded";
-        console.log(action);
-        if (action.type === "tvShows/getDetailsById") {
-          console.log('"tvShows/getDetailsById/fulfilled"');
-          
+        console.log(action.meta.arg);
+        if (action.meta.arg.navMenu === "episodes") {
+          state.details.episodes = Array.isArray(action.payload) ? action.payload : [];
+        } else if (action.meta.arg.navMenu === "cast") {
+          state.details.cast = Array.isArray(action.payload) ? action.payload : [];
         }
-        
-        state.showDetails = action.payload;
       })
       .addCase(getDetailsById.rejected, (state) => {
         state.detailsStatus = "failed";

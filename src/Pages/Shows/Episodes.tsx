@@ -6,21 +6,21 @@ import type { RootState, AppDispatch } from "../../store/index";
 
 function Episodes() {
   const { id, name } = useParams();
-  const customPath = `/shows/${id}/episodes`;
+  // const customPath = `/shows/${id}/episodes`;
   const dispatch = useDispatch<AppDispatch>();
-  const { showDetails, detailsStatus } = useSelector(
+  const { details, detailsStatus } = useSelector(
     (state: RootState) => state.tvShows
   );
 
   useEffect(() => {
     if (detailsStatus === "idle") {
-      dispatch(getDetailsById(customPath));
+      dispatch(getDetailsById({ id: id ?? "", navMenu: "episodes" }));
     }
-  }, [id, detailsStatus, dispatch, customPath]);
+  }, []);
 
   // Group episodes by season
-  const episodesBySeason = Array.isArray(showDetails)
-    ? showDetails.reduce((acc: any, ep: any) => {
+  const episodesBySeason = Array.isArray(details.episodes)
+    ? details.episodes.reduce((acc: any, ep: any) => {
         const season = ep.season || 1;
         if (!acc[season]) acc[season] = [];
         acc[season].push(ep);
@@ -107,7 +107,7 @@ function Episodes() {
         <div className="py-8 text-teal-700 text-center">Loading episodes...</div>
       )}
       {detailsStatus === "succeeded" &&
-        Array.isArray(showDetails) &&
+        Array.isArray(details.episodes) &&
         Object.keys(episodesBySeason).length === 0 && (
           <div className="py-8 text-gray-500 text-center">No episodes found.</div>
         )}

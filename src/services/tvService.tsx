@@ -7,5 +7,5 @@ export const fetchShows = () =>
 export const fetchShowById = (id: number) =>
   apiClient.get(`/shows/${id}`);
 
-export const fetchDetailsById = (customPath: string) =>
-  apiClient.get(`${customPath}`);
+export const fetchDetailsById = (id: string, navMenu: string) =>
+  apiClient.get(`/shows/${id}/${navMenu}`);

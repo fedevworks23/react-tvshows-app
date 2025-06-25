@@ -15,51 +15,43 @@ function ShowsNavbar() {
 
   const ShowDetailsLayoutNavbar = [
     {
-      path: "main",
+      path: "",
       title: "Main",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}`,
       subTitle: "",
     },
     {
       path: "episodes",
       title: "Episodes",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/episodes`,
       subTitle: " - Episodes",
     },
     {
       path: "seasons",
       title: "Seasons",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/seasons`,
       subTitle: " - Seasons",
     },
     {
       path: "cast",
       title: "Cast",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/cast`,
       subTitle: " - Cast",
     },
     {
       path: "crew",
       title: "Crew",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/crew`,
       subTitle: " - Crew",
     },
     {
       path: "characters",
       title: "Characters",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/characters`,
       subTitle: " - Characters",
     },
     {
       path: "gallery",
       title: "Gallery",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/gallery`,
       subTitle: " - Gallery",
     },
     {
       path: "news",
       title: "News",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/news`,
       subTitle: " - News",
     },
   ];
@@ -73,7 +65,7 @@ function ShowsNavbar() {
       {/* Show Nav Menu */}
       <div className="flex gap-2 mb-4">
         {ShowDetailsLayoutNavbar.map((navMenu, index) => (
-          <NavLink key={index} to={navMenu.route}>
+          <NavLink key={index} to={`/shows/${id}/${name?.replace(/\s+/g, "-")}/${navMenu.path}`} className="text-gray-500 hover:text-gray-900"  >
             <button
               className="bg-gray-200 shadow-sm px-4 py-1 rounded text-gray-500 hover:text-gray-900 cursor-pointer"
               onClick={() => {
