@@ -1,12 +1,18 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink, useParams } from "react-router";
-
-
+import { clearShowDetails } from "../../store/tvShowsSlice";
 
 function ShowsNavbar() {
-  const {id, name} = useParams<{ id: string; name: string }>();
+  const { id, name } = useParams<{ id: string; name: string }>();
   const [subTitle, setSubTitle] = useState<string>("");
-  
+
+  const dispatch = useDispatch();
+
+  const clearStateHandler = () => {
+    dispatch(clearShowDetails());
+  };
+
   const ShowDetailsLayoutNavbar = [
     {
       path: "main",
@@ -29,13 +35,13 @@ function ShowsNavbar() {
     {
       path: "cast",
       title: "Cast",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/Cast`,
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/cast`,
       subTitle: " - Cast",
     },
     {
       path: "crew",
       title: "Crew",
-      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/Crew`,
+      route: `/shows/${id}/${name?.replace(/\s+/g, "-")}/crew`,
       subTitle: " - Crew",
     },
     {
@@ -72,6 +78,7 @@ function ShowsNavbar() {
               className="bg-gray-200 shadow-sm px-4 py-1 rounded text-gray-500 hover:text-gray-900 cursor-pointer"
               onClick={() => {
                 setSubTitle(navMenu.subTitle);
+                clearStateHandler();
               }}
             >
               {navMenu.title}

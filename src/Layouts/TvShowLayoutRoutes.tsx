@@ -7,18 +7,27 @@ import HomePage from "../Pages/HomePage";
 import Episodes from "../Pages/Shows/Episodes";
 import Seasons from "../Pages/Shows/Seasons";
 import Main from "../Pages/Shows/Main";
+import Cast from "../Pages/Shows/Cast";
+import Crew from "../Pages/Shows/Crew";
+import Characters from "../Pages/Shows/Characters";
 
 function TvShowLayoutRoutes() {
   return (
     <>
       <Routes>
         <Route index element={<HomePage />} />
+
         <Route path="shows" element={<Shows />} />
+
         <Route path="shows/:id/:name" element={<ShowDetailsLayout />}>
           <Route path="" element={<Main />} />
           <Route path="episodes" element={<Episodes />} />
           <Route path="seasons" element={<Seasons />} />
+          <Route path="cast" element={<Cast />} />
+          <Route path="crew" element={<Crew />} />
+          <Route path="Characters" element={<Characters />} />
         </Route>
+
         <Route path="Schedule" element={<Schedule />} />
 
         <Route path={"*"} element={<PageNotFound />}></Route>

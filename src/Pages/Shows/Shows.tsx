@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { NavLink } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getTvShows, setSelectedShow } from "../../store/tvShowsSlice";
+import { getTvShows } from "../../store/tvShowsSlice";
 import type { RootState, AppDispatch } from "../../store";
 
 type ShowsProps = {
@@ -19,7 +19,9 @@ function Shows() {
   const { results, status } = useSelector((state: RootState) => state.tvShows);
 
   useEffect(() => {
-    dispatch(getTvShows());
+    if(status === "idle") {
+      dispatch(getTvShows());
+    }
   }, [dispatch]);
 
   if (status === "loading") return <p className="text-white">Loading...</p>;
@@ -36,7 +38,6 @@ function Shows() {
           <NavLink
             key={item.id}
             to={`/shows/${item.id}/${item.name.replace(/\s+/g, "-")}/`}
-            onClick={() => dispatch(setSelectedShow(item))}
             className="group flex flex-col bg-[#3F3F3F] shadow hover:shadow-lg border-teal-100 border-b-4 rounded-b overflow-hidden transition"
             style={{ minHeight: 340 }}
           >
