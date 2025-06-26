@@ -4,13 +4,26 @@ import ShowDetailsLayout from "../Pages/Shows/ShowDetails/ShowDetailsLayout";
 import SchedulePage from "../Pages/Schedule/SchedulePage";
 import ShowsList from "../Pages/Shows/ShowsList";
 import Home from "../Pages/Home/Home";
+import ShowDetailsContent from "../Pages/Shows/ShowDetails/ShowDetailsContent";
 
-const ShowOverview = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowOverview"));
-const ShowEpisodes = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowEpisodes"));
-const ShowSeasons = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowSeasons"));
-const ShowCast = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowCast"));
-const ShowCrew = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowCrew"));
-const ShowCharacters = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowCharacters"));
+const ShowOverview = React.lazy(
+  () => import("../Pages/Shows/ShowDetails/ShowOverview")
+);
+const ShowEpisodes = React.lazy(
+  () => import("../Pages/Shows/ShowDetails/ShowEpisodes")
+);
+const ShowSeasons = React.lazy(
+  () => import("../Pages/Shows/ShowDetails/ShowSeasons")
+);
+const ShowCast = React.lazy(
+  () => import("../Pages/Shows/ShowDetails/ShowCast")
+);
+const ShowCrew = React.lazy(
+  () => import("../Pages/Shows/ShowDetails/ShowCrew")
+);
+const ShowCharacters = React.lazy(
+  () => import("../Pages/Shows/ShowDetails/ShowCharacters")
+);
 
 const PageNotFound = React.lazy(() => import("../Pages/NotFound/PageNotFound"));
 
@@ -24,12 +37,14 @@ function TvShowLayoutRoutes() {
           <Route path="shows" element={<ShowsList />} />
 
           <Route path="shows/:id/:name" element={<ShowDetailsLayout />}>
-            <Route index element={<ShowOverview />} />
-            <Route path="episodes" element={<ShowEpisodes />} />
-            <Route path="seasons" element={<ShowSeasons />} />
-            <Route path="cast" element={<ShowCast />} />
-            <Route path="crew" element={<ShowCrew />} />
-            <Route path="Characters" element={<ShowCharacters />} />
+            <Route path="" element={<ShowDetailsContent />}>
+              <Route path="" element={<ShowOverview />} />
+              <Route path="episodes" element={<ShowEpisodes />} />
+              <Route path="seasons" element={<ShowSeasons />} />
+              <Route path="cast" element={<ShowCast />} />
+              <Route path="crew" element={<ShowCrew />} />
+              <Route path="Characters" element={<ShowCharacters />} />
+            </Route>
           </Route>
 
           <Route path="Schedule" element={<SchedulePage />} />

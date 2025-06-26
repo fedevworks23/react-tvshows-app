@@ -1,11 +1,11 @@
-interface ShowSeasons {
+interface SeasonsComponent {
   details: {
     seasons: any[];
   };
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
 }
 
-function ShowSeasons({ details, detailsStatus }: ShowSeasons) {
+function SeasonsComponent({ details, detailsStatus }: SeasonsComponent) {
   return (
     <>
       <div className="bg-white px-2 md:px-8 py-8 min-h-screen">
@@ -93,4 +93,4 @@ function ShowSeasons({ details, detailsStatus }: ShowSeasons) {
   );
 }
 
-export default ShowSeasons;
+export default SeasonsComponent;

@@ -21,6 +21,7 @@ export interface TvShowsState {
   showDetails: any; // Reserved for possible future use
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
   details: {
+    main: object; // Reserved for possible future use
     episodes: any[];
     seasons: any[];
     cast: any[];
@@ -50,8 +51,6 @@ export const fetchShowDetailsById = createAsyncThunk<[] | {}, { id: string; navM
   "tvShows/fetchShowDetailsById",
   async ({ id, navMenu }) => {
     const response = await fetchDetailsById(id, navMenu);
-    console.log("Response from fetchShowDetailsById:");
-
     return response.data;
   }
 );
@@ -65,6 +64,7 @@ const initialState: TvShowsState = {
   showDetails: null, // Reserved for possible future use
   detailsStatus: "idle",
   details: {
+    main: {}, // Reserved for possible future use
     episodes: [],
     seasons: [],
     cast: [],
@@ -82,9 +82,8 @@ const tvShowsSlice = createSlice({
       state.selectedShow = action.payload;
     },
     clearShowDetails: (state) => {
-      console.log(state.detailsStatus);
       state.detailsStatus = "idle";
-      state.showDetails = null; // Reset show details
+      // state.showDetails = null; // Reset show details
     },
     // Clear all TV shows and reset status
     clearTvShows: (state) => {
@@ -125,11 +124,16 @@ const tvShowsSlice = createSlice({
       })
       .addCase(fetchShowDetailsById.fulfilled, (state, action) => {
         state.detailsStatus = "succeeded";
-        console.log(action.meta.arg);
         if (action.meta.arg.navMenu === "episodes") {
           state.details.episodes = Array.isArray(action.payload) ? action.payload : [];
+        } else if (action.meta.arg.navMenu === "") {
+          state.details.main = action.payload;
+        }  else if (action.meta.arg.navMenu === "seasons") {
+          state.details.seasons = Array.isArray(action.payload) ? action.payload : [];
         } else if (action.meta.arg.navMenu === "cast") {
           state.details.cast = Array.isArray(action.payload) ? action.payload : [];
+        } else if (action.meta.arg.navMenu === "crew") {
+          state.details.crew = Array.isArray(action.payload) ? action.payload : [];
         }
       })
       .addCase(fetchShowDetailsById.rejected, (state) => {

@@ -1,39 +1,11 @@
-import { useEffect } from "react";
-import { useLocation, useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchShowDetailsById } from "../../../store/tvShowsReducer";
-import type { RootState, AppDispatch } from "../../../store/index";
-
-function Episodes() {
-  const { id } = useParams<{ id: string }>();
-  const { pathname } = useLocation();
-  const currentPath = pathname.split("/").pop();
-
-  const dispatch = useDispatch<AppDispatch>();
-  const { details, detailsStatus } = useSelector(
-    (state: RootState) => state.tvShows
-  );
-
-  useEffect(() => {
-    if (detailsStatus === "idle") {
-      dispatch(fetchShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
-    }
-  }, []);
-
-  return <EpisodesComponent details={details} detailsStatus={detailsStatus} />;
-}
-
-interface EpisodesComponentProps {
+interface ShowEpisodesProps {
   details: {
     episodes: any[];
   };
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
 }
 
-const EpisodesComponent = ({
-  details,
-  detailsStatus,
-}: EpisodesComponentProps) => {
+function ShowEpisodes({ details, detailsStatus }: ShowEpisodesProps) {
   // Group episodes by season
   const episodesBySeason = Array.isArray(details.episodes)
     ? details.episodes.reduce((acc: any, ep: any) => {
@@ -142,6 +114,6 @@ const EpisodesComponent = ({
       )}
     </section>
   );
-};
+}
 
-export default Episodes;
+export default ShowEpisodes;

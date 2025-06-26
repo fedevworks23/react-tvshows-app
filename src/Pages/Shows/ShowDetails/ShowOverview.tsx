@@ -1,59 +1,34 @@
-import { useEffect } from "react";
-import { useParams } from "react-router";
-import LoaderComponent from "../../../components/Loader/LoaderComponent";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../store/index";
-import { getShowById } from "../../../store/tvShowsReducer";
+import { useEffect, useState } from "react";
 
-function Main() {
-  const { id, name } = useParams<{ id: string; name: string }>();
-  const dispatch = useDispatch<AppDispatch>();
-  // Define a type for the show object based on your expected data structure
-  type Show = {
-    image?: { original?: string; medium?: string };
+interface ShowOverview {
+  details: {
+    [key: string]: any; // Adjust the type as per your actual data structure
+    id?: number;
     name?: string;
-    summary?: string;
-    _links?: { previousepisode?: { name?: string } };
-    network?: { name?: string };
-    premiered?: string;
-    runtime?: number | string;
-    status?: string;
-    type?: string;
-    genres?: string[];
-    officialSite?: string;
-    rating?: { average?: number };
-    // Add other fields as needed
-    [key: string]: any;
+    image?: {
+      original?: string;
+      medium?: string;
+    };
+    // Add other properties as needed
   };
+  detailsStatus: "idle" | "loading" | "succeeded" | "failed";
+}
 
-  const show = useSelector((state: RootState) => state.tvShows.showById) as Show;
-
+function ShowOverview({ details, detailsStatus }: ShowOverview) {
+  const [show, setShow] = useState<typeof details.main>(details.main || {});
   useEffect(() => {
-    dispatch(getShowById(Number(id)));
-  }, []);
-
-  if (!show || Object.keys(show).length === 0) {
-    return (
-      <div className="flex justify-center items-center h-96 text-white">
-        <LoaderComponent />
-      </div>
-    );
-  }
-
+    setShow(details.main || {});
+  }, [details.main]);
   return (
     <>
-      {/* Responsive layout */}
-      <h1>{name}</h1>
+      <div>{detailsStatus}</div>
       <div className="flex lg:flex-row flex-col gap-8">
         {/* Left: Poster and actions */}
         <div className="flex flex-col items-center lg:items-start w-full">
           <div className="flex flex-row level-1">
             <div className="left-poster flex-4/12">
               <img
-                src={
-                  show.image?.original ||
-                  show.image?.medium
-                }
+                src={show.image?.original || show.image?.medium}
                 alt={show.name}
                 className="shadow-lg mb-4 rounded w-[80%] h-auto"
               />
@@ -179,7 +154,7 @@ function Main() {
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Average Runtime:</span>{" "}
               {/* {show.runtime || 62} minutes */}
-              {show.runtime !== "" ? show.runtim : "N.A."}
+              {show.runtime !== "" ? show.runtime : "N.A."}
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Status:</span>{" "}
@@ -307,4 +282,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default ShowOverview;

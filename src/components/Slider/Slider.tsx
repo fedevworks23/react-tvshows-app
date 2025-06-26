@@ -60,7 +60,7 @@ function Slider() {
             <div
               key={show.id}
               className="flex-shrink-0 bg-[#232a36] shadow-lg rounded-lg w-48 overflow-hidden hover:scale-105 transition-transform cursor-pointer"
-              onClick={() => navigate(`/shows/${show.id}/${show.name.replace(/\s+/g, "-")}`)}
+              onClick={() => navigate(`/shows/${show.id}/${show.name.replace(/\s+/g, "-")}/`)}
             >
               <img
                 src={

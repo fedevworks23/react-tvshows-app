@@ -1,17 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useParams } from "react-router";
-import { clearShowDetails } from "../../../store/tvShowsReducer";
+import { clearShowDetails, fetchShowDetailsById } from "../../../store/tvShowsReducer";
+import type { AppDispatch } from "../../../store";
 
 function ShowsNavbar() {
   const { id, name } = useParams<{ id: string; name: string }>();
   const [subTitle, setSubTitle] = useState<string>("");
+  const [currentUrl, setCurrentUrl] = useState<string>(
+    window.location.pathname
+  );
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const clearStateHandler = () => {
     dispatch(clearShowDetails());
   };
+
+  useEffect(() => {
+    const currentPath = currentUrl.split("/").pop();
+    dispatch(fetchShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
+    
+  }, [id, currentUrl]);
 
   const ShowDetailsLayoutNavbar = [
     {
@@ -65,13 +75,22 @@ function ShowsNavbar() {
       {/* Show Nav Menu */}
       <div className="flex gap-2 mb-4">
         {ShowDetailsLayoutNavbar.map((navMenu, index) => (
-          <NavLink key={index} to={`/shows/${id}/${name?.replace(/\s+/g, "-")}/${navMenu.path}`} className="text-gray-500 hover:text-gray-900"  >
+          <NavLink
+            key={index}
+            to={`/shows/${id}/${name?.replace(/\s+/g, "-")}/${navMenu.path}`}
+            className="text-gray-500 hover:text-gray-900"
+            onClick={() => {
+              setSubTitle(navMenu.subTitle);
+              clearStateHandler();
+              // Update currentUrl to the new location after navigation
+              setTimeout(() => {
+                setCurrentUrl(window.location.pathname);
+              }, 0);
+            }}
+          >
             <button
               className="bg-gray-200 shadow-sm px-4 py-1 rounded text-gray-500 hover:text-gray-900 cursor-pointer"
-              onClick={() => {
-                setSubTitle(navMenu.subTitle);
-                clearStateHandler();
-              }}
+              type="button"
             >
               {navMenu.title}
             </button>
