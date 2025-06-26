@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getDetailsById } from "../../store/tvShowsReducer";
+import { fetchShowDetailsById } from "../../store/tvShowsReducer";
 import type { RootState, AppDispatch } from "../../store/index";
 
 function ShowDescription() {
@@ -16,7 +16,7 @@ function ShowDescription() {
 
   useEffect(() => {
     if (detailsStatus === "idle") {
-      dispatch(getDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
+      dispatch(fetchShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
     }
   }, []);
 

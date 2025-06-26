@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import type { AppDispatch, RootState } from "../../store";
-import { getDetailsById } from "../../store/tvShowsReducer";
+import { fetchShowDetailsById } from "../../store/tvShowsReducer";
 
 function Cast() {
   const { id } = useParams();
@@ -13,7 +13,7 @@ function Cast() {
 
   useEffect(() => {
     if (detailsStatus === "idle") {
-      dispatch(getDetailsById({ id: id ?? "", navMenu: "cast" }));
+      dispatch(fetchShowDetailsById({ id: id ?? "", navMenu: "cast" }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, detailsStatus, dispatch]);
