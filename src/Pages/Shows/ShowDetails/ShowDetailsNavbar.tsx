@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useParams } from "react-router";
-import { clearShowDetails } from "../../store/tvShowsReducer";
+import { clearShowDetails } from "../../../store/tvShowsReducer";
 
 function ShowsNavbar() {
   const { id, name } = useParams<{ id: string; name: string }>();

@@ -35,6 +35,29 @@
   }
 }
 
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+
+.animate-list {
+    animation: appear 5s linear;
+    animation-timeline: view();
+    animation-range: entry 0 cover 25%;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        scale: 0.5;
+    }
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchShowDetailsById } from "../../store/tvShowsReducer";
-import type { RootState, AppDispatch } from "../../store/index";
+import { fetchShowDetailsById } from "../../../store/tvShowsReducer";
+import type { RootState, AppDispatch } from "../../../store/index";
 
 function Episodes() {
   const { id } = useParams<{ id: string }>();

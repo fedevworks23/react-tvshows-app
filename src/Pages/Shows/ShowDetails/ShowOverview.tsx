@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useParams } from "react-router";
-import LoaderComponent from "../../components/Loader/LoaderComponent";
+import LoaderComponent from "../../../components/Loader/LoaderComponent";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store/index";
-import { getShowById } from "../../store/tvShowsReducer";
+import type { AppDispatch, RootState } from "../../../store/index";
+import { getShowById } from "../../../store/tvShowsReducer";
 
 function Main() {
   const { id, name } = useParams<{ id: string; name: string }>();

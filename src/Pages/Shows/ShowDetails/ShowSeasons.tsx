@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
-import { URL } from "../../Constant/constants";
+import { URL } from "../../../Constant/constants";
 
 interface Season {
   id: number;

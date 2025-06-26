@@ -1,18 +1,18 @@
 import React, { Suspense } from "react";
 import { Route, Routes } from "react-router";
-import ShowDetailsPage from "../Pages/Shows/ShowDetailsPage";
-import SchedulePage from "../Pages/SchedulePage";
-import AllShows from "../Pages/Shows/AllShows";
-import Home from "../Pages/Home";
+import ShowDetailsLayout from "../Pages/Shows/ShowDetails/ShowDetailsLayout";
+import SchedulePage from "../Pages/Schedule/SchedulePage";
+import ShowsList from "../Pages/Shows/ShowsList";
+import Home from "../Pages/Home/Home";
 
-const ShowOverview = React.lazy(() => import("../Pages/Shows/ShowOverview"));
-const ShowEpisodes = React.lazy(() => import("../Pages/Shows/ShowEpisodes"));
-const ShowSeasons = React.lazy(() => import("../Pages/Shows/ShowSeasons"));
-const ShowCast = React.lazy(() => import("../Pages/Shows/ShowCast"));
-const ShowCrew = React.lazy(() => import("../Pages/Shows/ShowCrew"));
-const ShowCharacters = React.lazy(() => import("../Pages/Shows/ShowCharacters"));
+const ShowOverview = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowOverview"));
+const ShowEpisodes = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowEpisodes"));
+const ShowSeasons = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowSeasons"));
+const ShowCast = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowCast"));
+const ShowCrew = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowCrew"));
+const ShowCharacters = React.lazy(() => import("../Pages/Shows/ShowDetails/ShowCharacters"));
 
-const PageNotFound = React.lazy(() => import("../Pages/PageNotFound"));
+const PageNotFound = React.lazy(() => import("../Pages/NotFound/PageNotFound"));
 
 function TvShowLayoutRoutes() {
   return (
@@ -21,9 +21,9 @@ function TvShowLayoutRoutes() {
         <Routes>
           <Route index element={<Home />} />
 
-          <Route path="shows" element={<AllShows />} />
+          <Route path="shows" element={<ShowsList />} />
 
-          <Route path="shows/:id/:name" element={<ShowDetailsPage />}>
+          <Route path="shows/:id/:name" element={<ShowDetailsLayout />}>
             <Route index element={<ShowOverview />} />
             <Route path="episodes" element={<ShowEpisodes />} />
             <Route path="seasons" element={<ShowSeasons />} />

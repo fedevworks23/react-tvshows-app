@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { URL } from "../Constant/constants";
+import { URL } from "../../Constant/constants";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
