@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { NavLink } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getTvShows } from "../../store/tvShowsReducer";
+import { fetchAllShows } from "../../store/tvShowsReducer";
 import type { RootState, AppDispatch } from "../../store";
 
 type ShowsProps = {
@@ -20,7 +20,7 @@ function Shows() {
 
   useEffect(() => {
     if (status === "idle" || (status === "succeeded" && !results.length)) {
-      dispatch(getTvShows());
+      dispatch(fetchAllShows());
     }
   }, [dispatch]);
 

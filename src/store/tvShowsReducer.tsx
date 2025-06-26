@@ -29,8 +29,8 @@ export interface TvShowsState {
 }
 
 // Async thunk to fetch all TV shows
-export const getTvShows = createAsyncThunk<TvShow[], void>(
-  "tvShows/getTvShows",
+export const fetchAllShows = createAsyncThunk<TvShow[], void>(
+  "tvShows/fetchAllShows",
   async () => {
     const response = await fetchShows();
     return response.data;
@@ -96,14 +96,14 @@ const tvShowsSlice = createSlice({
   extraReducers: (builder) => {
     // Handle fetching all TV shows
     builder
-      .addCase(getTvShows.pending, (state) => {
+      .addCase(fetchAllShows.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getTvShows.fulfilled, (state, action) => {
+      .addCase(fetchAllShows.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.results = action.payload;
       })
-      .addCase(getTvShows.rejected, (state) => {
+      .addCase(fetchAllShows.rejected, (state) => {
         state.status = "failed";
       })
       // Handle fetching a single selected TV show
