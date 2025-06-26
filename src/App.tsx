@@ -1,14 +1,14 @@
 import { Outlet } from "react-router";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import TvShowLayoutRoutes from "./Layouts/TvShowLayoutRoutes";
+import ShowRoutesLayout from "./Layouts/ShowRoutesLayout";
 
 function App() {
   return (
     <>
       <div>
         <Navbar />  
-        <TvShowLayoutRoutes />
+        <ShowRoutesLayout />
         <Outlet />
       </div>
     </>

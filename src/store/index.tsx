@@ -1,6 +1,6 @@
 // src/store/index.js
 import { configureStore } from '@reduxjs/toolkit';
-import tvShowsReducer from './tvShowsSlice';
+import tvShowsReducer from './tvShowsReducer';
 
 export const store = configureStore({
   reducer: {

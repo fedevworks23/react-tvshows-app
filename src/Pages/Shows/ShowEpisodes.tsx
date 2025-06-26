@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { getDetailsById } from "../../store/tvShowsSlice";
+import { getDetailsById } from "../../store/tvShowsReducer";
 import type { RootState, AppDispatch } from "../../store/index";
 
 function Episodes() {
-  const { id, name } = useParams();
-  // const customPath = `/shows/${id}/episodes`;
+  const { id } = useParams<{ id: string }>();
+  const { pathname } = useLocation();
+  const currentPath = pathname.split("/").pop();
+
   const dispatch = useDispatch<AppDispatch>();
   const { details, detailsStatus } = useSelector(
     (state: RootState) => state.tvShows
@@ -14,10 +16,24 @@ function Episodes() {
 
   useEffect(() => {
     if (detailsStatus === "idle") {
-      dispatch(getDetailsById({ id: id ?? "", navMenu: "episodes" }));
+      dispatch(getDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
     }
   }, []);
 
+  return <EpisodesComponent details={details} detailsStatus={detailsStatus} />;
+}
+
+interface EpisodesComponentProps {
+  details: {
+    episodes: any[];
+  };
+  detailsStatus: "idle" | "loading" | "succeeded" | "failed";
+}
+
+const EpisodesComponent = ({
+  details,
+  detailsStatus,
+}: EpisodesComponentProps) => {
   // Group episodes by season
   const episodesBySeason = Array.isArray(details.episodes)
     ? details.episodes.reduce((acc: any, ep: any) => {
@@ -28,7 +44,6 @@ function Episodes() {
       }, {})
     : {};
 
-
   return (
     <section className="bg-white shadow p-2 md:p-8 rounded-xl">
       {Object.keys(episodesBySeason)
@@ -36,13 +51,15 @@ function Episodes() {
         .map((seasonNum) => (
           <div key={seasonNum} className="mb-10">
             <h2 className="mb-2 font-light text-teal-700 text-2xl md:text-4xl">
-              <span className="text-[16px]">{name}</span> Season {seasonNum}{" "}
+              Season {seasonNum}{" "}
             </h2>
             <div className="overflow-x-auto">
               <table className="min-w-full border-separate border-spacing-0">
                 <thead>
                   <tr className="bg-[#3F3F3F] text-white">
-                    <th className="px-4 py-2 rounded-tl-lg text-left">Number</th>
+                    <th className="px-4 py-2 rounded-tl-lg text-left">
+                      Number
+                    </th>
                     <th className="px-4 py-2 text-left">Date</th>
                     <th className="px-4 py-2 text-left">Name</th>
                     <th className="px-4 py-2 rounded-tr-lg text-left">Score</th>
@@ -62,11 +79,14 @@ function Episodes() {
                         </td>
                         <td className="px-4 py-2 text-gray-700">
                           {ep.airdate
-                            ? new Date(ep.airdate).toLocaleDateString(undefined, {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              })
+                            ? new Date(ep.airdate).toLocaleDateString(
+                                undefined,
+                                {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                }
+                              )
                             : "-"}
                         </td>
                         <td className="px-4 py-2">
@@ -104,18 +124,24 @@ function Episodes() {
         ))}
       {/* Loading and empty states */}
       {detailsStatus === "loading" && (
-        <div className="py-8 text-teal-700 text-center">Loading episodes...</div>
+        <div className="py-8 text-teal-700 text-center">
+          Loading episodes...
+        </div>
       )}
       {detailsStatus === "succeeded" &&
         Array.isArray(details.episodes) &&
         Object.keys(episodesBySeason).length === 0 && (
-          <div className="py-8 text-gray-500 text-center">No episodes found.</div>
+          <div className="py-8 text-gray-500 text-center">
+            No episodes found.
+          </div>
         )}
       {detailsStatus === "failed" && (
-        <div className="py-8 text-red-500 text-center">Failed to load episodes.</div>
+        <div className="py-8 text-red-500 text-center">
+          Failed to load episodes.
+        </div>
       )}
     </section>
   );
-}
+};
 
 export default Episodes;
