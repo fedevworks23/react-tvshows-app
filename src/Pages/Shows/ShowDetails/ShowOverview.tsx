@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { timestampToDate } from "../../../utils/timeStampToDate";
 
 interface ShowOverview {
   details: {
@@ -14,21 +15,20 @@ interface ShowOverview {
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
 }
 
-function ShowOverview({ details, detailsStatus }: ShowOverview) {
+function ShowOverview({ details }: ShowOverview) {
   const [show, setShow] = useState<typeof details.main>(details.main || {});
   useEffect(() => {
     setShow(details.main || {});
   }, [details.main]);
   return (
     <>
-      <div>{detailsStatus}</div>
       <div className="flex lg:flex-row flex-col gap-8">
         {/* Left: Poster and actions */}
         <div className="flex flex-col items-center lg:items-start w-full">
           <div className="flex flex-row level-1">
             <div className="left-poster flex-4/12">
               <img
-                src={show.image?.original || show.image?.medium}
+                src={show.image?.medium || show.image?.original}
                 alt={show.name}
                 className="shadow-lg mb-4 rounded w-[80%] h-auto"
               />
@@ -121,7 +121,12 @@ function ShowOverview({ details, detailsStatus }: ShowOverview) {
                           {show._links?.previousepisode?.name ||
                             "No Next Episode"}
                         </td>
-                        <td className="px-4 py-2 text-gray-600">Jul 1, 2022</td>
+                        <td className="px-4 py-2 text-gray-600">
+                          {timestampToDate(show?.updated)?.toLocaleDateString(
+                            undefined,
+                            { year: "numeric", month: "short", day: "numeric" }
+                          ) || ""}
+                        </td>
                         <td className="px-4 py-2"></td>
                       </tr>
                     </tbody>

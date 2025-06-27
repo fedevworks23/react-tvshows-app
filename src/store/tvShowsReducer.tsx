@@ -20,6 +20,7 @@ export interface TvShowsState {
   status: "idle" | "loading" | "succeeded" | "failed";
   showDetails: any; // Reserved for possible future use
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
+  latestShows: any[];
   details: {
     main: object; // Reserved for possible future use
     episodes: any[];
@@ -48,13 +49,13 @@ export const getShowById = createAsyncThunk<TvShowsState["showById"], number>(
   }
 );
 
-export const fetchShowDetailsById = createAsyncThunk<[] | {}, { id: string; navMenu: string }>(
-  "tvShows/fetchShowDetailsById",
-  async ({ id, navMenu }) => {
-    const response = await fetchDetailsById(id, navMenu);
-    return response.data;
-  }
-);
+export const fetchShowDetailsById = createAsyncThunk<
+  [] | {},
+  { id: string; navMenu: string }
+>("tvShows/fetchShowDetailsById", async ({ id, navMenu }) => {
+  const response = await fetchDetailsById(id, navMenu);
+  return response.data;
+});
 
 // Initial state for the slice
 const initialState: TvShowsState = {
@@ -64,13 +65,14 @@ const initialState: TvShowsState = {
   status: "idle",
   showDetails: null, // Reserved for possible future use
   detailsStatus: "idle",
+  latestShows: [],
   details: {
     main: {}, // Reserved for possible future use
     episodes: [],
     seasons: [],
     cast: [],
     crew: [],
-    gallery: []
+    gallery: [],
   },
 };
 
@@ -80,6 +82,10 @@ const tvShowsSlice = createSlice({
   initialState,
   reducers: {
     // Set the selected show manually
+    setLatestShow: (state, action) => {
+      console.log(state);
+      state.latestShows.push(action.payload);
+    },
     setSelectedShow: (state, action) => {
       state.selectedShow = action.payload;
     },
@@ -127,17 +133,43 @@ const tvShowsSlice = createSlice({
       .addCase(fetchShowDetailsById.fulfilled, (state, action) => {
         state.detailsStatus = "succeeded";
         if (action.meta.arg.navMenu === "episodes") {
-          state.details.episodes = Array.isArray(action.payload) ? action.payload : [];
+          state.details.episodes = Array.isArray(action.payload)
+            ? action.payload
+            : [];
         } else if (action.meta.arg.navMenu === "") {
           state.details.main = action.payload;
-        }  else if (action.meta.arg.navMenu === "seasons") {
-          state.details.seasons = Array.isArray(action.payload) ? action.payload : [];
+        } else if (action.meta.arg.navMenu === "seasons") {
+          state.details.seasons = Array.isArray(action.payload)
+            ? action.payload
+            : [];
         } else if (action.meta.arg.navMenu === "cast") {
-          state.details.cast = Array.isArray(action.payload) ? action.payload : [];
+          state.details.cast = Array.isArray(action.payload)
+            ? action.payload
+            : [];
         } else if (action.meta.arg.navMenu === "crew") {
-          state.details.crew = Array.isArray(action.payload) ? action.payload : [];
+          state.details.crew = Array.isArray(action.payload)
+            ? action.payload
+            : [];
         } else if (action.meta.arg.navMenu === "images") {
-          state.details.gallery = Array.isArray(action.payload) ? action.payload : [];
+          state.details.gallery = Array.isArray(action.payload)
+            ? action.payload
+            : [];
+        } else if (action.meta.arg.navMenu === "latest") {
+          if (Array.isArray(action.payload)) {
+            state.latestShows = [
+              ...state.latestShows,
+              ...action.payload.filter(
+                (item: any) =>
+                  !state.latestShows.some((s: any) => s.id === item.id)
+              ),
+            ];
+          } else if (action.payload) {
+            if (
+              !state.latestShows.some((s: any) => s.id === action.payload)
+            ) {
+              state.latestShows = [...state.latestShows, action.payload];
+            }
+          }
         }
       })
       .addCase(fetchShowDetailsById.rejected, (state) => {
@@ -147,6 +179,10 @@ const tvShowsSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { setSelectedShow, clearShowDetails, clearTvShows } =
-  tvShowsSlice.actions;
+export const {
+  setSelectedShow,
+  clearShowDetails,
+  clearTvShows,
+  setLatestShow,
+} = tvShowsSlice.actions;
 export default tvShowsSlice.reducer;
