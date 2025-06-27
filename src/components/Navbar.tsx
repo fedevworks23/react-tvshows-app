@@ -2,9 +2,13 @@ import { Link, NavLink } from "react-router";
 import { FaBars } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store";
+import { clearShowDetails } from "../store/tvShowsReducer";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const linksList = [
     { path: "shows", name: "Shows" },
@@ -19,6 +23,7 @@ function Navbar() {
           <NavLink
             to={"/"}
             className="pb-1 font-medium text-white hover:text-yellow-400"
+            onClick={() => dispatch(clearShowDetails())}
           >
             Tv Shows
           </NavLink>
