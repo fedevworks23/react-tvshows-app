@@ -2,8 +2,8 @@ import React, {  } from "react";
 import { useLocation } from "react-router";
 import {  useSelector } from "react-redux";
 import type { RootState } from "../../../store/index";
+import ShowGallery from "./ShowGallery";
 
-// Lazy load all detail subcomponents
 const ShowOverview = React.lazy(() => import("./ShowOverview"));
 const ShowEpisodes = React.lazy(() => import("./ShowEpisodes"));
 const ShowSeasons = React.lazy(() => import("./ShowSeasons"));
@@ -41,6 +41,10 @@ function ShowDetailsContent() {
     case "crew":
       return (
         <ShowCrew details={details} detailsStatus={detailsStatus} />
+      );
+    case "images":
+      return (
+        <ShowGallery details={details} detailsStatus={detailsStatus} />
       );
     default:
       return (

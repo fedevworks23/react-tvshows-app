@@ -26,6 +26,7 @@ export interface TvShowsState {
     seasons: any[];
     cast: any[];
     crew: any[];
+    gallery: any[];
   };
 }
 
@@ -69,6 +70,7 @@ const initialState: TvShowsState = {
     seasons: [],
     cast: [],
     crew: [],
+    gallery: []
   },
 };
 
@@ -134,6 +136,8 @@ const tvShowsSlice = createSlice({
           state.details.cast = Array.isArray(action.payload) ? action.payload : [];
         } else if (action.meta.arg.navMenu === "crew") {
           state.details.crew = Array.isArray(action.payload) ? action.payload : [];
+        } else if (action.meta.arg.navMenu === "images") {
+          state.details.gallery = Array.isArray(action.payload) ? action.payload : [];
         }
       })
       .addCase(fetchShowDetailsById.rejected, (state) => {

@@ -7,6 +7,8 @@ interface ShowCrew {
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
 }
 
+import fallbackImg from '../../../assets/210x295px.png'
+
 function ShowCrew({ details, detailsStatus }: ShowCrew) {
   return (
     <>
@@ -26,11 +28,11 @@ function ShowCrew({ details, detailsStatus }: ShowCrew) {
             >
               <img
                 src={
-                  member.person?.image?.medium ||
-                  "https://via.placeholder.com/150"
+                  member.person?.image?.medium || 
+                  fallbackImg
                 }
                 alt={member.person?.name || "Unknown"}
-                className="mb-2 rounded-full w-24 h-24 object-cover"
+                className="mb-2 rounded-full w-[50%] h-auto object-cover"
               />
               <h3 className="font-semibold text-gray-700 text-lg">
                 {member.person?.name || "Unknown"}

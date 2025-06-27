@@ -5,6 +5,7 @@ import SchedulePage from "../Pages/Schedule/SchedulePage";
 import ShowsList from "../Pages/Shows/ShowsList";
 import Home from "../Pages/Home/Home";
 import ShowDetailsContent from "../Pages/Shows/ShowDetails/ShowDetailsContent";
+import ShowGallery from "../Pages/Shows/ShowDetails/ShowGallery";
 
 const ShowOverview = React.lazy(
   () => import("../Pages/Shows/ShowDetails/ShowOverview")
@@ -43,6 +44,8 @@ function TvShowLayoutRoutes() {
               <Route path="seasons" element={<ShowSeasons />} />
               <Route path="cast" element={<ShowCast />} />
               <Route path="crew" element={<ShowCrew />} />
+              <Route path="images" element={<ShowGallery />} />
+              
               <Route path="Characters" element={<ShowCharacters />} />
             </Route>
           </Route>

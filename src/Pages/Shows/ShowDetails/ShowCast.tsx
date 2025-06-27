@@ -1,3 +1,5 @@
+import fallbackImg from "../../../assets/210x295px.png";
+
 interface EpisodesComponentProps {
   details: {
     cast: any[];
@@ -14,7 +16,7 @@ function ShowCast({ details, detailsStatus }: EpisodesComponentProps) {
       {details.cast &&
       Array.isArray(details.cast) &&
       details.cast.length > 0 ? (
-        <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="gap-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {details.cast.map((member: any, index: number) => (
             <div
               key={index}
@@ -23,10 +25,10 @@ function ShowCast({ details, detailsStatus }: EpisodesComponentProps) {
               <img
                 src={
                   member.person?.image?.medium ||
-                  "https://via.placeholder.com/150"
+                  fallbackImg
                 }
                 alt={member.person?.name || "Unknown"}
-                className="mb-2 rounded-full w-24 h-24 object-cover"
+                className="mb-2 rounded-full w-[50%] h-auto object-cover"
               />
               <h3 className="font-semibold text-gray-700 text-lg">
                 {member.person?.name || "Unknown"}

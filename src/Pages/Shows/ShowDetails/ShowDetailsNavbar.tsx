@@ -19,6 +19,8 @@ function ShowsNavbar() {
 
   useEffect(() => {
     const currentPath = currentUrl.split("/").pop();
+    console.log(currentPath);
+    
     dispatch(fetchShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
     
   }, [id, currentUrl]);
@@ -55,7 +57,7 @@ function ShowsNavbar() {
       subTitle: " - Characters",
     },
     {
-      path: "gallery",
+      path: "images",
       title: "Gallery",
       subTitle: " - Gallery",
     },
