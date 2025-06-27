@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import fallbackImg from "../../../assets/210x295px.png";
 
 interface EpisodesComponentProps {
@@ -8,25 +9,28 @@ interface EpisodesComponentProps {
 }
 
 function ShowCast({ details, detailsStatus }: EpisodesComponentProps) {
+  const [show, setShow] = useState<typeof details>(details || {});
+
+  useEffect(() => {
+    setShow(details || {});
+  }, [details]);
+
   return (
     <>
       {detailsStatus === "loading" && (
         <div className="text-gray-500">Loading cast information...</div>
       )}
-      {details.cast &&
-      Array.isArray(details.cast) &&
-      details.cast.length > 0 ? (
+      {show?.cast  &&
+      Array.isArray(show?.cast ) &&
+      show?.cast .length > 0 ? (
         <div className="gap-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          {details.cast.map((member: any, index: number) => (
+          {show?.cast .map((member: any, index: number) => (
             <div
               key={index}
               className="flex flex-col items-center bg-white p-4 rounded-lg"
             >
               <img
-                src={
-                  member.person?.image?.medium ||
-                  fallbackImg
-                }
+                src={member.person?.image?.medium || fallbackImg}
                 alt={member.person?.name || "Unknown"}
                 className="mb-2 rounded-full w-[50%] h-auto object-cover"
               />
@@ -43,6 +47,21 @@ function ShowCast({ details, detailsStatus }: EpisodesComponentProps) {
         detailsStatus !== "loading" && (
           <div className="text-gray-500">No cast information available.</div>
         )
+      )}
+
+      {/* Loading and empty states */}
+      {detailsStatus === "loading" && (
+        <div className="py-8 text-teal-700 text-center">
+          Loading episodes...
+        </div>
+      )}
+      {detailsStatus === "succeeded" && (
+        <div className="py-8 text-gray-500 text-center">No episodes found.</div>
+      )}
+      {detailsStatus === "failed" && (
+        <div className="py-8 text-red-500 text-center">
+          Failed to load episodes.
+        </div>
       )}
     </>
   );

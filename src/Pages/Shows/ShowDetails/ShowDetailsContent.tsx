@@ -15,36 +15,37 @@ function ShowDetailsContent() {
   const { pathname } = useLocation();
   const currentPath = pathname.split("/").pop();
 
-  const { details, detailsStatus } = useSelector(
+  const { showDetails, detailsStatus } = useSelector(
     (state: RootState) => state.tvShows
   );
 
+  
 
   // Render the correct component based on the current path
   switch (currentPath) {
     case "":
       return (
-        <ShowOverview details={details} detailsStatus={detailsStatus} />
+        <ShowOverview details={showDetails} detailsStatus={detailsStatus} />
       );
     case "episodes":
       return (
-        <ShowEpisodes details={details} detailsStatus={detailsStatus} />
+        <ShowEpisodes details={showDetails?._embedded} detailsStatus={detailsStatus} />
       );
     case "seasons":
       return (
-        <ShowSeasons details={details} detailsStatus={detailsStatus} />
+        <ShowSeasons details={showDetails?._embedded} detailsStatus={detailsStatus} />
       );
     case "cast":
       return (
-        <ShowCast details={details} detailsStatus={detailsStatus} />
+        <ShowCast details={showDetails?._embedded} detailsStatus={detailsStatus} />
       );
     case "crew":
       return (
-        <ShowCrew details={details} detailsStatus={detailsStatus} />
+        <ShowCrew details={showDetails?._embedded} detailsStatus={detailsStatus} />
       );
     case "images":
       return (
-        <ShowGallery details={details} detailsStatus={detailsStatus} />
+        <ShowGallery details={showDetails?._embedded} detailsStatus={detailsStatus} />
       );
     default:
       return (

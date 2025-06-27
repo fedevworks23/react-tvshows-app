@@ -3,7 +3,9 @@ import {
   fetchShows,
   fetchShowById,
   fetchDetailsById,
+  fetchLatestShows,
 } from "../services/tvService";
+
 
 // TV show type definition
 export interface TvShow {
@@ -21,14 +23,6 @@ export interface TvShowsState {
   showDetails: any; // Reserved for possible future use
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
   latestShows: any[];
-  details: {
-    main: object; // Reserved for possible future use
-    episodes: any[];
-    seasons: any[];
-    cast: any[];
-    crew: any[];
-    gallery: any[];
-  };
 }
 
 // Async thunk to fetch all TV shows
@@ -57,23 +51,26 @@ export const fetchShowDetailsById = createAsyncThunk<
   return response.data;
 });
 
+// In your tvShowsReducer.tsx
+export const getLatestShows = createAsyncThunk(
+  "tvShows/fetchLatestShows",
+  async (ids: string[]) => {
+    const results = await Promise.all(
+      ids.map((id: string): Promise<any> => fetchLatestShows([id]))
+    );
+    return results.map((res) => res.data);
+  }
+);
+
 // Initial state for the slice
 const initialState: TvShowsState = {
   results: [],
   showById: {},
   selectedShow: null,
   status: "idle",
-  showDetails: null, // Reserved for possible future use
+  showDetails: {}, // Reserved for possible future use
   detailsStatus: "idle",
   latestShows: [],
-  details: {
-    main: {}, // Reserved for possible future use
-    episodes: [],
-    seasons: [],
-    cast: [],
-    crew: [],
-    gallery: [],
-  },
 };
 
 // The tvShows slice
@@ -91,7 +88,6 @@ const tvShowsSlice = createSlice({
     },
     clearShowDetails: (state) => {
       state.detailsStatus = "idle";
-      // state.showDetails = null; // Reset show details
     },
     // Clear all TV shows and reset status
     clearTvShows: (state) => {
@@ -132,47 +128,25 @@ const tvShowsSlice = createSlice({
       })
       .addCase(fetchShowDetailsById.fulfilled, (state, action) => {
         state.detailsStatus = "succeeded";
-        if (action.meta.arg.navMenu === "episodes") {
-          state.details.episodes = Array.isArray(action.payload)
-            ? action.payload
-            : [];
-        } else if (action.meta.arg.navMenu === "") {
-          state.details.main = action.payload;
-        } else if (action.meta.arg.navMenu === "seasons") {
-          state.details.seasons = Array.isArray(action.payload)
-            ? action.payload
-            : [];
-        } else if (action.meta.arg.navMenu === "cast") {
-          state.details.cast = Array.isArray(action.payload)
-            ? action.payload
-            : [];
-        } else if (action.meta.arg.navMenu === "crew") {
-          state.details.crew = Array.isArray(action.payload)
-            ? action.payload
-            : [];
-        } else if (action.meta.arg.navMenu === "images") {
-          state.details.gallery = Array.isArray(action.payload)
-            ? action.payload
-            : [];
-        } else if (action.meta.arg.navMenu === "latest") {
-          if (Array.isArray(action.payload)) {
-            state.latestShows = [
-              ...state.latestShows,
-              ...action.payload.filter(
-                (item: any) =>
-                  !state.latestShows.some((s: any) => s.id === item.id)
-              ),
-            ];
-          } else if (action.payload) {
-            if (
-              !state.latestShows.some((s: any) => s.id === action.payload)
-            ) {
-              state.latestShows = [...state.latestShows, action.payload];
-            }
-          }
-        }
+        state.showDetails = action.payload;
       })
       .addCase(fetchShowDetailsById.rejected, (state) => {
+        state.detailsStatus = "failed";
+      })
+
+      // Handle fetching latest show details by ID
+      .addCase(getLatestShows.pending, (state) => {
+        state.detailsStatus = "loading";
+      })
+      .addCase(getLatestShows.fulfilled, (state, action) => {
+        state.detailsStatus = "succeeded";
+        if (Array.isArray(action.payload)) {
+          state.latestShows = action.payload;
+        } else if (action.payload) {
+          state.latestShows = [action.payload];
+        }
+      })
+      .addCase(getLatestShows.rejected, (state) => {
         state.detailsStatus = "failed";
       });
   },

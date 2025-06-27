@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store";
-import { fetchShowDetailsById } from "../../../store/tvShowsReducer";
+import { getLatestShows } from "../../../store/tvShowsReducer";
 import { NavLink } from "react-router";
 
 function Latest() {
@@ -34,17 +34,11 @@ function Latest() {
   );
 
   useEffect(() => {
-    if (detailsStatus === "idle" || !latestShows.length) {
-      {
-        newShowsId &&
-          newShowsId
-            .slice(0, 5)
-            .map((item) =>
-              dispatch(fetchShowDetailsById({ id: item.id, navMenu: "latest" }))
-            );
-      }
+    if (detailsStatus === "idle" && !latestShows.length && newShowsId.length) {
+      const ids = newShowsId.slice(0, 5).map((item) => item.id);
+      dispatch(getLatestShows(ids));
     }
-  }, [newShowsId]);
+  }, [newShowsId, detailsStatus, latestShows.length, dispatch]);
 
   return (
     <>
@@ -82,7 +76,6 @@ const LatestShowDetails = ({ item }: LatestShowDetailsProps) => {
         <img
           src={
             item.image?.medium ||
-            item.image?.original ||
             "https://via.placeholder.com/210x295?text=No+Image"
           }
           alt={item.name || ""}

@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 interface ShowEpisodesProps {
   details: {
     episodes: any[];
@@ -6,9 +8,14 @@ interface ShowEpisodesProps {
 }
 
 function ShowEpisodes({ details, detailsStatus }: ShowEpisodesProps) {
+  const [show, setShow] = useState<typeof details>(details || {});
+  useEffect(() => {
+    setShow(details || {});
+  }, [details]);
+
   // Group episodes by season
-  const episodesBySeason = Array.isArray(details.episodes)
-    ? details.episodes.reduce((acc: any, ep: any) => {
+  const episodesBySeason = Array.isArray(show?.episodes)
+    ? show?.episodes.reduce((acc: any, ep: any) => {
         const season = ep.season || 1;
         if (!acc[season]) acc[season] = [];
         acc[season].push(ep);
@@ -101,7 +108,7 @@ function ShowEpisodes({ details, detailsStatus }: ShowEpisodesProps) {
         </div>
       )}
       {detailsStatus === "succeeded" &&
-        Array.isArray(details.episodes) &&
+        Array.isArray(show?.episodes) &&
         Object.keys(episodesBySeason).length === 0 && (
           <div className="py-8 text-gray-500 text-center">
             No episodes found.

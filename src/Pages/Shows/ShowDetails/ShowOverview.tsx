@@ -16,10 +16,10 @@ interface ShowOverview {
 }
 
 function ShowOverview({ details }: ShowOverview) {
-  const [show, setShow] = useState<typeof details.main>(details.main || {});
+  const [show, setShow] = useState<typeof details>(details || {});
   useEffect(() => {
-    setShow(details.main || {});
-  }, [details.main]);
+    setShow(details || {});
+  }, [details]);
   return (
     <>
       <div className="flex lg:flex-row flex-col gap-8">

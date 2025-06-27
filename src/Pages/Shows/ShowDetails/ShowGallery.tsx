@@ -1,13 +1,21 @@
+import { useEffect, useState } from "react";
+
 interface ShowGalleryProps {
   details: any; // Replace 'any' with the actual type of details
   detailsStatus: string; // Replace 'string' with the actual type if needed
 }
 
 function ShowGallery({ details, detailsStatus }: ShowGalleryProps) {
+  const [show, setShow] = useState<typeof details>(details || {});
+
+  useEffect(() => {
+    setShow(details || {});
+  }, [details]);
+
   return (
     <>
       <div className="gap-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 text-black">
-        {details.gallery.map(
+        {Array.isArray(show?.images) && show?.images.map(
           (item: any, index: number) =>
             item.type === "poster" && (
               <div key={index} className="mb-4">

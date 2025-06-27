@@ -7,21 +7,28 @@ interface ShowCrew {
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
 }
 
+import { useEffect, useState } from 'react';
 import fallbackImg from '../../../assets/210x295px.png'
 
 function ShowCrew({ details, detailsStatus }: ShowCrew) {
+  const [show, setShow] = useState<typeof details>(details || {});
+
+  useEffect(() => {
+    setShow(details || {});
+  }, [details]);
+
   return (
     <>
       {detailsStatus === "loading" && (
         <div className="text-gray-500">Loading crew information...</div>
       )}
-      {details.crew &&
-      Array.isArray(details.crew) &&
-      details.crew.length > 0 ? (
+      {show?.crew &&
+      Array.isArray(show?.crew) &&
+      show?.crew.length > 0 && (
         <div
           className="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         >
-          {details.crew.map((member: any, index: number) => (
+          {show?.crew.map((member: any, index: number) => (
             <div
               key={index}
               className="flex flex-col items-center bg-white p-4 rounded-lg"
@@ -43,10 +50,21 @@ function ShowCrew({ details, detailsStatus }: ShowCrew) {
             </div>
           ))}
         </div>
-      ) : (
-        detailsStatus !== "loading" && (
-          <div className="text-gray-500">No crew information available.</div>
-        )
+      )}
+      
+      {/* Loading and empty states */}
+      {detailsStatus === "loading" && (
+        <div className="py-8 text-teal-700 text-center">
+          Loading episodes...
+        </div>
+      )}
+      {detailsStatus === "succeeded" && (
+        <div className="py-8 text-gray-500 text-center">No episodes found.</div>
+      )}
+      {detailsStatus === "failed" && (
+        <div className="py-8 text-red-500 text-center">
+          Failed to load episodes.
+        </div>
       )}
     </>
   );
