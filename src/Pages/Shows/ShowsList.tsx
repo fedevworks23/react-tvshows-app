@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllShows } from "../../store/tvShowsReducer";
 import type { RootState, AppDispatch } from "../../store";
@@ -17,15 +17,31 @@ type ShowsProps = {
 
 function Shows() {
   const dispatch = useDispatch<AppDispatch>();
-  const { results, detailsStatus } = useSelector((state: RootState) => state.tvShows);
+  const { results, detailsStatus } = useSelector(
+    (state: RootState) => state.tvShows
+  );
 
   useEffect(() => {
-    if (detailsStatus === "idle" || (detailsStatus === "succeeded" && !results.length)) {
+    if (
+      detailsStatus === "idle" ||
+      (detailsStatus === "succeeded" && !results.length)
+    ) {
       dispatch(fetchAllShows());
     }
   }, [dispatch]);
 
-  if (detailsStatus === "loading") return <p className="text-white">Loading...</p>;
+  // Error Handling
+  const { error } = useSelector((state: RootState) => state.tvShows);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (detailsStatus === "failed" && error) {
+      navigate("/error", { state: { message: error } });
+    }
+  }, [detailsStatus, error, navigate]);
+
+  if (detailsStatus === "loading")
+    return <p className="text-white">Loading...</p>;
   if (detailsStatus === "failed")
     return <p className="text-white">Error loading TV shows.</p>;
 
@@ -43,11 +59,7 @@ function Shows() {
             style={{ minHeight: 340 }}
           >
             <img
-              src={
-                item.image?.medium ||
-                item.image?.original ||
-                NO_IMAGE
-              }
+              src={item.image?.medium || item.image?.original || NO_IMAGE}
               alt={item.name || ""}
               className="w-full object-cover"
             />
