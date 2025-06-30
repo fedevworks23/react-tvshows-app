@@ -52,7 +52,7 @@ export const fetchShowDetailsById = createAsyncThunk<
 });
 
 // In your tvShowsReducer.tsx
-export const getLatestShows = createAsyncThunk(
+export const getLatestShowsByID = createAsyncThunk(
   "tvShows/fetchLatestShows",
   async (ids: string[]) => {
     const results = await Promise.all(
@@ -78,14 +78,6 @@ const tvShowsSlice = createSlice({
   name: "tvShows",
   initialState,
   reducers: {
-    // Set the selected show manually
-    setLatestShow: (state, action) => {
-      console.log(state);
-      state.latestShows.push(action.payload);
-    },
-    setSelectedShow: (state, action) => {
-      state.selectedShow = action.payload;
-    },
     clearShowDetails: (state) => {
       state.detailsStatus = "idle";
     },
@@ -135,10 +127,10 @@ const tvShowsSlice = createSlice({
       })
 
       // Handle fetching latest show details by ID
-      .addCase(getLatestShows.pending, (state) => {
+      .addCase(getLatestShowsByID.pending, (state) => {
         state.detailsStatus = "loading";
       })
-      .addCase(getLatestShows.fulfilled, (state, action) => {
+      .addCase(getLatestShowsByID.fulfilled, (state, action) => {
         state.detailsStatus = "succeeded";
         if (Array.isArray(action.payload)) {
           state.latestShows = action.payload;
@@ -146,7 +138,7 @@ const tvShowsSlice = createSlice({
           state.latestShows = [action.payload];
         }
       })
-      .addCase(getLatestShows.rejected, (state) => {
+      .addCase(getLatestShowsByID.rejected, (state) => {
         state.detailsStatus = "failed";
       });
   },
@@ -154,9 +146,7 @@ const tvShowsSlice = createSlice({
 
 // Export actions and reducer
 export const {
-  setSelectedShow,
   clearShowDetails,
   clearTvShows,
-  setLatestShow,
 } = tvShowsSlice.actions;
 export default tvShowsSlice.reducer;
