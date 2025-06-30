@@ -6,6 +6,7 @@ import ShowsList from "../Pages/Shows/ShowsList";
 import Home from "../Pages/Home/Home";
 import ShowDetailsContent from "../Pages/Shows/ShowDetails/ShowDetailsContent";
 import ShowGallery from "../Pages/Shows/ShowDetails/ShowGallery";
+import ErrorPage from "../Pages/Error/ErrorPage";
 
 const ShowOverview = React.lazy(
   () => import("../Pages/Shows/ShowDetails/ShowOverview")
@@ -30,32 +31,44 @@ const PageNotFound = React.lazy(() => import("../Pages/NotFound/PageNotFound"));
 
 function TvShowLayoutRoutes() {
   return (
-    <>
-      <Suspense fallback={<div className="text-gray-500">Loading...</div>}>
-        <Routes>
-          <Route index element={<Home />} />
+    <Suspense fallback={<div className="text-gray-500">Loading...</div>}>
+      <Routes>
+        <Route index element={<Home />} />
 
-          <Route path="shows" element={<ShowsList />} />
+        <Route path="shows" element={<ShowsList />} />
 
-          <Route path="shows/:id/:name" element={<ShowDetailsLayout />}>
-            <Route path="" element={<ShowDetailsContent />}>
-              <Route path="" element={<ShowOverview />} />
-              <Route path="episodes" element={<ShowEpisodes />} />
-              <Route path="seasons" element={<ShowSeasons />} />
-              <Route path="cast" element={<ShowCast />} />
-              <Route path="crew" element={<ShowCrew />} />
-              <Route path="images" element={<ShowGallery />} />
-              
-              <Route path="Characters" element={<ShowCharacters />} />
-            </Route>
+        <Route path="shows/:id/:name" element={<ShowDetailsLayout />}>
+          <Route path="" element={<ShowDetailsContent />}>
+            <Route path="" element={<ShowOverview details={{
+              id: undefined,
+              name: undefined,
+              image: undefined
+            }} detailsStatus={"idle"} />} />
+            <Route path="episodes" element={<ShowEpisodes details={{
+              episodes: []
+            }} detailsStatus={"idle"} />} />
+            <Route path="seasons" element={<ShowSeasons details={{
+              seasons: []
+            }} detailsStatus={"idle"} />} />
+            <Route path="cast" element={<ShowCast details={{
+              cast: []
+            }} detailsStatus={"idle"} />} />
+            <Route path="crew" element={<ShowCrew details={{
+              crew: [],
+              cast: undefined
+            }} detailsStatus={"idle"} />} />
+            <Route path="images" element={<ShowGallery details={undefined} detailsStatus={""} />} />
+            <Route path="characters" element={<ShowCharacters />} />
           </Route>
+        </Route>
 
-          <Route path="Schedule" element={<SchedulePage />} />
+        <Route path="Schedule" element={<SchedulePage />} />
 
-          <Route path={"*"} element={<PageNotFound />}></Route>
-        </Routes>
-      </Suspense>
-    </>
+        <Route path="/error" element={<ErrorPage />} />
+
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </Suspense>
   );
 }
 
