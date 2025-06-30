@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllShows } from "../../store/tvShowsReducer";
 import type { RootState, AppDispatch } from "../../store";
+import { NO_IMAGE } from "../../Constant/constants";
 
 type ShowsProps = {
   id: number;
@@ -45,7 +46,7 @@ function Shows() {
               src={
                 item.image?.medium ||
                 item.image?.original ||
-                "https://via.placeholder.com/210x295?text=No+Image"
+                NO_IMAGE
               }
               alt={item.name || ""}
               className="w-full object-cover"

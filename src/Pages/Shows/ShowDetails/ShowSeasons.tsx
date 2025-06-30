@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { NO_IMAGE } from "../../../Constant/constants";
 
 interface ShowSeasons {
   details: {
@@ -27,8 +28,7 @@ function ShowSeasons({ details, detailsStatus }: ShowSeasons) {
               >
                 <img
                   src={
-                    season.image?.medium ||
-                    "https://via.placeholder.com/210x295?text=No+Image"
+                    season.image?.medium || NO_IMAGE
                   }
                   alt={`Season ${season.number}`}
                   className="flex-shrink-0 shadow-lg mx-auto md:mx-0 rounded w-32 h-44 object-cover"

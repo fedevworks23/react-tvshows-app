@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { NO_IMAGE } from "../../Constant/constants";
 
 function Slider() {
   const [shows, setShows] = useState<any[]>([]);
@@ -66,7 +67,7 @@ function Slider() {
                 src={
                   show.image?.medium ||
                   show.image?.original ||
-                  "https://via.placeholder.com/210x295?text=No+Image"
+                  NO_IMAGE
                 }
                 alt={show.name}
                 className="w-full h-64 object-cover"
