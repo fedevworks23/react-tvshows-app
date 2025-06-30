@@ -3,7 +3,7 @@ import {
   fetchShows,
   fetchShowById,
   fetchDetailsById,
-  fetchLatestShows,
+  fetchLatestShowsById,
 } from "../services/tvService";
 
 
@@ -53,10 +53,10 @@ export const fetchShowDetailsById = createAsyncThunk<
 
 // In your tvShowsReducer.tsx
 export const getLatestShowsByID = createAsyncThunk(
-  "tvShows/fetchLatestShows",
+  "tvShows/fetchLatestShowsById",
   async (ids: string[]) => {
     const results = await Promise.all(
-      ids.map((id: string): Promise<any> => fetchLatestShows([id]))
+      ids.map((id: string): Promise<any> => fetchLatestShowsById([id]))
     );
     return results.map((res) => res.data);
   }

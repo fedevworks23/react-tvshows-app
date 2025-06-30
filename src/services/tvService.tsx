@@ -15,6 +15,6 @@ export const fetchDetailsById = (id: string, navMenu: string) => {
   }
 };
 
-export const fetchLatestShows = (id: string[]) => {
+export const fetchLatestShowsById = (id: string[]) => {
   return apiClient.get(`/shows/${id}?embed[]=cast`)
 }
