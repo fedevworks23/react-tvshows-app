@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router";
-import { clearShowDetails, fetchShowDetailsById } from "../../../store/tvShowsReducer";
+import { clearShowDetails, getShowDetailsById } from "../../../store/tvShowsReducer";
 import type { AppDispatch, RootState } from "../../../store";
 
 function ShowsNavbar() {
@@ -22,7 +22,7 @@ function ShowsNavbar() {
     const currentPath = currentUrl.split("/").pop();
     console.log(currentPath);
     if(detailsStatus && !Object.entries(showDetails).length){
-      dispatch(fetchShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
+      dispatch(getShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
     }
     
   }, [id, currentUrl]);

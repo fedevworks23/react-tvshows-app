@@ -15,6 +15,10 @@ export const fetchDetailsById = (id: string, navMenu: string) => {
   }
 };
 
+export const fetchPopularShows = (currentDate: string[]) => {
+  return apiClient.get(`/schedule?country=US&date=${currentDate}`)
+}
+
 export const fetchLatestShowsById = (id: string[]) => {
   return apiClient.get(`/shows/${id}?embed[]=cast`)
 }

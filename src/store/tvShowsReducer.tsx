@@ -4,8 +4,8 @@ import {
   fetchShowById,
   fetchDetailsById,
   fetchLatestShowsById,
+  fetchPopularShows,
 } from "../services/tvService";
-
 
 // TV show type definition
 export interface TvShow {
@@ -22,6 +22,7 @@ export interface TvShowsState {
   status: "idle" | "loading" | "succeeded" | "failed";
   showDetails: any; // Reserved for possible future use
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
+  popularShows: any[];
   latestShows: any[];
 }
 
@@ -43,7 +44,7 @@ export const getShowById = createAsyncThunk<TvShowsState["showById"], number>(
   }
 );
 
-export const fetchShowDetailsById = createAsyncThunk<
+export const getShowDetailsById = createAsyncThunk<
   [] | {},
   { id: string; navMenu: string }
 >("tvShows/fetchShowDetailsById", async ({ id, navMenu }) => {
@@ -51,7 +52,14 @@ export const fetchShowDetailsById = createAsyncThunk<
   return response.data;
 });
 
-// In your tvShowsReducer.tsx
+export const getPopularShows = createAsyncThunk<
+  TvShowsState["popularShows"],
+  string[]
+>("tvShows/fetchPopularShows", async (currentDate: string[]) => {
+  const response = await fetchPopularShows(currentDate);
+  return response.data;
+});
+
 export const getLatestShowsByID = createAsyncThunk(
   "tvShows/fetchLatestShowsById",
   async (ids: string[]) => {
@@ -70,6 +78,7 @@ const initialState: TvShowsState = {
   status: "idle",
   showDetails: {}, // Reserved for possible future use
   detailsStatus: "idle",
+  popularShows: [],
   latestShows: [],
 };
 
@@ -115,14 +124,26 @@ const tvShowsSlice = createSlice({
 
       // Handle fetching details by ID
       // This is used for episodes, seasons, cast, crew, etc.
-      .addCase(fetchShowDetailsById.pending, (state) => {
+      .addCase(getShowDetailsById.pending, (state) => {
         state.detailsStatus = "loading";
       })
-      .addCase(fetchShowDetailsById.fulfilled, (state, action) => {
+      .addCase(getShowDetailsById.fulfilled, (state, action) => {
         state.detailsStatus = "succeeded";
         state.showDetails = action.payload;
       })
-      .addCase(fetchShowDetailsById.rejected, (state) => {
+      .addCase(getShowDetailsById.rejected, (state) => {
+        state.detailsStatus = "failed";
+      })
+
+      // Handle fetching Popular Shows
+      .addCase(getPopularShows.pending, (state) => {
+        state.detailsStatus = "loading";
+      })
+      .addCase(getPopularShows.fulfilled, (state, action) => {
+        state.detailsStatus = "succeeded";
+        state.popularShows = action.payload;
+      })
+      .addCase(getPopularShows.rejected, (state) => {
         state.detailsStatus = "failed";
       })
 
@@ -145,8 +166,5 @@ const tvShowsSlice = createSlice({
 });
 
 // Export actions and reducer
-export const {
-  clearShowDetails,
-  clearTvShows,
-} = tvShowsSlice.actions;
+export const { clearShowDetails, clearTvShows } = tvShowsSlice.actions;
 export default tvShowsSlice.reducer;
