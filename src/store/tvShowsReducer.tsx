@@ -19,11 +19,11 @@ export interface TvShowsState {
   results: TvShow[];
   showById: {}; // Reserved for possible future use
   selectedShow: TvShow | null;
-  status: "idle" | "loading" | "succeeded" | "failed";
   showDetails: any; // Reserved for possible future use
   detailsStatus: "idle" | "loading" | "succeeded" | "failed";
   popularShows: any[];
   latestShows: any[];
+  error: any;
 }
 
 // Async thunk to fetch all TV shows
@@ -75,11 +75,11 @@ const initialState: TvShowsState = {
   results: [],
   showById: {},
   selectedShow: null,
-  status: "idle",
   showDetails: {}, // Reserved for possible future use
   detailsStatus: "idle",
   popularShows: [],
   latestShows: [],
+  error: null,
 };
 
 // The tvShows slice
@@ -89,37 +89,40 @@ const tvShowsSlice = createSlice({
   reducers: {
     clearShowDetails: (state) => {
       state.detailsStatus = "idle";
+      // state.showDetails = {};
     },
     // Clear all TV shows and reset status
     clearTvShows: (state) => {
       state.results = [];
       state.selectedShow = null;
-      state.status = "idle";
+      state.detailsStatus = "idle";
     },
   },
   extraReducers: (builder) => {
     // Handle fetching all TV shows
     builder
       .addCase(fetchAllShows.pending, (state) => {
-        state.status = "loading";
+        state.detailsStatus = "loading";
       })
       .addCase(fetchAllShows.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.detailsStatus = "succeeded";
         state.results = action.payload;
       })
-      .addCase(fetchAllShows.rejected, (state) => {
-        state.status = "failed";
+      .addCase(fetchAllShows.rejected, (state, action) => {
+        state.detailsStatus = "failed";
+        state.error = action.payload || "Failed to load show details";
       })
       // Handle fetching a single selected TV show
       .addCase(getShowById.pending, (state) => {
-        state.status = "loading";
+        state.detailsStatus = "loading";
       })
       .addCase(getShowById.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.detailsStatus = "succeeded";
         state.showById = action.payload;
       })
-      .addCase(getShowById.rejected, (state) => {
-        state.status = "failed";
+      .addCase(getShowById.rejected, (state, action) => {
+        state.detailsStatus = "failed";
+        state.error = action.payload || "Failed to load show details";
       })
 
       // Handle fetching details by ID
@@ -131,8 +134,9 @@ const tvShowsSlice = createSlice({
         state.detailsStatus = "succeeded";
         state.showDetails = action.payload;
       })
-      .addCase(getShowDetailsById.rejected, (state) => {
+      .addCase(getShowDetailsById.rejected, (state, action) => {
         state.detailsStatus = "failed";
+        state.error = action.payload || "Failed to load show details";
       })
 
       // Handle fetching Popular Shows
@@ -143,8 +147,9 @@ const tvShowsSlice = createSlice({
         state.detailsStatus = "succeeded";
         state.popularShows = action.payload;
       })
-      .addCase(getPopularShows.rejected, (state) => {
+      .addCase(getPopularShows.rejected, (state, action) => {
         state.detailsStatus = "failed";
+        state.error = action.payload || "Failed to load show details";
       })
 
       // Handle fetching latest show details by ID
@@ -159,8 +164,9 @@ const tvShowsSlice = createSlice({
           state.latestShows = [action.payload];
         }
       })
-      .addCase(getLatestShowsByID.rejected, (state) => {
+      .addCase(getLatestShowsByID.rejected, (state, action) => {
         state.detailsStatus = "failed";
+        state.error = action.payload || "Failed to load show details";
       });
   },
 });

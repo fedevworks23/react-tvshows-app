@@ -2,7 +2,7 @@ import { useEffect, useState, type Key } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store";
 import { getPopularShows } from "../../../store/tvShowsReducer";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { NO_IMAGE } from "../../../Constant/constants";
 import { currentDate } from "../../../utils/formatDate";
 import { timestampToDate } from "../../../utils/timeStampToDate";
@@ -49,6 +49,16 @@ function Latest() {
     setLatestShows(sortedNewShows);
   }, [popularShows, dispatch]);
 
+  // Error Handling
+  const { error } = useSelector((state: RootState) => state.tvShows);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (detailsStatus === "failed" && error) {
+      navigate("/error", { state: { message: error } });
+    }
+  }, [detailsStatus, error, navigate]);
+  
   return (
     <>
       <div className="gap-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">

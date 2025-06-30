@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router";
-import { clearShowDetails, getShowDetailsById } from "../../../store/tvShowsReducer";
+import {
+  getShowDetailsById,
+} from "../../../store/tvShowsReducer";
 import type { AppDispatch, RootState } from "../../../store";
 
 function ShowsNavbar() {
@@ -13,18 +15,20 @@ function ShowsNavbar() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const clearStateHandler = () => {
-    dispatch(clearShowDetails());
-  };
-  
-  const {detailsStatus, showDetails} = useSelector((state: RootState) => state.tvShows)
+  const { detailsStatus, showDetails } = useSelector(
+    (state: RootState) => state.tvShows
+  );
+
   useEffect(() => {
-    const currentPath = currentUrl.split("/").pop();
-    console.log(currentPath);
-    if(detailsStatus && !Object.entries(showDetails).length){
-      dispatch(getShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" }));
+    if (
+      (detailsStatus === "idle" && showDetails.id !== Number(id)) ||
+      (detailsStatus === "succeeded" && !Object.entries(showDetails).length)
+    ) {
+      const currentPath = currentUrl.split("/").pop();
+      dispatch(
+        getShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" })
+      );
     }
-    
   }, [id, currentUrl]);
 
   const ShowDetailsLayoutNavbar = [
@@ -85,7 +89,6 @@ function ShowsNavbar() {
             className="text-gray-500 hover:text-gray-900"
             onClick={() => {
               setSubTitle(navMenu.subTitle);
-              clearStateHandler();
               // Update currentUrl to the new location after navigation
               setTimeout(() => {
                 setCurrentUrl(window.location.pathname);

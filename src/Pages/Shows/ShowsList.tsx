@@ -17,16 +17,16 @@ type ShowsProps = {
 
 function Shows() {
   const dispatch = useDispatch<AppDispatch>();
-  const { results, status } = useSelector((state: RootState) => state.tvShows);
+  const { results, detailsStatus } = useSelector((state: RootState) => state.tvShows);
 
   useEffect(() => {
-    if (status === "idle" || (status === "succeeded" && !results.length)) {
+    if (detailsStatus === "idle" || (detailsStatus === "succeeded" && !results.length)) {
       dispatch(fetchAllShows());
     }
   }, [dispatch]);
 
-  if (status === "loading") return <p className="text-white">Loading...</p>;
-  if (status === "failed")
+  if (detailsStatus === "loading") return <p className="text-white">Loading...</p>;
+  if (detailsStatus === "failed")
     return <p className="text-white">Error loading TV shows.</p>;
 
   return (
