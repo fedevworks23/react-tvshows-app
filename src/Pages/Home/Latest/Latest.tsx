@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store";
 import { getLatestShows } from "../../../store/tvShowsReducer";
 import { NavLink } from "react-router";
+import { NO_IMAGE } from "../../../Constant/constants";
 
 function Latest() {
   const dispatch = useDispatch<AppDispatch>();
@@ -75,8 +76,7 @@ const LatestShowDetails = ({ item }: LatestShowDetailsProps) => {
       <div>
         <img
           src={
-            item.image?.medium ||
-            "https://via.placeholder.com/210x295?text=No+Image"
+            item.image?.medium || NO_IMAGE
           }
           alt={item.name || ""}
           className="w-full object-cover"

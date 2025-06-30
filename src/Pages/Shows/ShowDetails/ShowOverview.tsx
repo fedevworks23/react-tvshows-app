@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { timestampToDate } from "../../../utils/timeStampToDate";
+import { NO_IMAGE } from "../../../Constant/constants";
 
 interface ShowOverview {
   details: {
@@ -28,15 +29,10 @@ function ShowOverview({ details }: ShowOverview) {
           <div className="flex flex-row level-1">
             <div className="left-poster flex-4/12">
               <img
-                src={show.image?.medium || show.image?.original}
+                src={show.image?.medium || show.image?.original || NO_IMAGE}
                 alt={show.name}
                 className="shadow-lg mb-4 rounded w-[80%] h-auto"
               />
-              {/* Disabled Follow Button under poster */}
-              {/* <button className="bg-green-500 hover:bg-green-600 mb-4 py-2 rounded w-full font-semibold text-white transition">
-                &#43; Follow
-              </button> */}
-              {/* Watch now and streaming icons */}
               <div className="flex flex-col items-center gap-2 w-full">
                 <button className="flex justify-center items-center bg-white hover:bg-green-50 px-6 py-2 border-2 border-green-500 rounded-lg w-full font-semibold text-green-700 transition">
                   <svg
