@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { timestampToDate } from "../../../utils/timeStampToDate";
 import { NO_IMAGE } from "../../../Constant/constants";
+import { currentDay } from "../../../utils/formatDate";
 
 interface ShowOverview {
   details: {
@@ -29,9 +30,9 @@ function ShowOverview({ details }: ShowOverview) {
           <div className="flex flex-row level-1">
             <div className="left-poster flex-4/12">
               <img
-                src={show.image?.medium || show.image?.original || NO_IMAGE}
-                alt={show.name}
-                className="shadow-lg mb-4 rounded w-[80%] h-auto"
+                src={show?.image?.medium || show?.image?.original || NO_IMAGE}
+                alt={show?.name}
+                className="shadow-lg mb-4 rounded w-[100%] h-auto"
               />
               <div className="flex flex-col items-center gap-2 w-full">
                 <button className="flex justify-center items-center bg-white hover:bg-green-50 px-6 py-2 border-2 border-green-500 rounded-lg w-full font-semibold text-green-700 transition">
@@ -60,8 +61,8 @@ function ShowOverview({ details }: ShowOverview) {
 
             <div className="right-summary flex-8/12">
               <div className="mb-4 ml-4 text-gray-700 text-lg text-justify">
-                {show.summary && (
-                  <span dangerouslySetInnerHTML={{ __html: show.summary }} />
+                {show?.summary && (
+                  <span dangerouslySetInnerHTML={{ __html: show?.summary }} />
                 )}
               </div>
             </div>
@@ -114,7 +115,7 @@ function ShowOverview({ details }: ShowOverview) {
                     <tbody>
                       <tr className="hover:bg-gray-50">
                         <td className="px-4 py-2 text-teal-700 underline cursor-pointer">
-                          {show._links?.previousepisode?.name ||
+                          {show?._links?.previousepisode?.name ||
                             "No Next Episode"}
                         </td>
                         <td className="px-4 py-2 text-gray-600">
@@ -144,35 +145,44 @@ function ShowOverview({ details }: ShowOverview) {
               Show Info
             </h3>
             <div className="mb-1 text-gray-700 text-sm">
-              <span className="font-semibold">Web channel:</span>{" "}
+              <span className="font-semibold">Network:</span>{" "}
               <span className="text-teal-700">
-                {show.network?.name || "Netflix"}
+                {show?.network?.name || "Netflix"}
               </span>{" "}
               <span className="text-gray-500">
-                ({show.premiered?.slice(0, 4)} - now)
+                ({show?.premiered?.slice(0, 4)} - now)
+              </span>
+            </div>
+            <div className="mb-1 text-gray-700 text-sm">
+              <span className="font-semibold">Schedule:</span>{" "}
+              <span className="text-teal-700">
+                {show?.schedule?.time || "Netflix"}
+              </span>{" "}
+              <span className="text-gray-500">
+                {/* {new Date().getDay() - 1}s */}
+                {show?.schedule?.days.includes(currentDay)}
               </span>
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Average Runtime:</span>{" "}
-              {/* {show.runtime || 62} minutes */}
-              {show.runtime !== "" ? show.runtime : "N.A."}
+              {/* {show?.runtime || 62} minutes */}
+              {show?.averageRuntime !== "" ? show?.averageRuntime : "N.A."}
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Status:</span>{" "}
-              {show.status || "Running"}; returning{" "}
-              <span className="text-teal-700">November 2025</span>
+              {show?.status || "Running"}
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Show Type:</span>{" "}
-              {show.type || "Scripted"}
+              {show?.type || "Scripted"}
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Genres:</span>{" "}
-              {show.genres?.join(" | ") || "Drama | Horror | Science-Fiction"}
+              {show?.genres?.join(" | ") || "N.A."}
             </div>
             <div className="mb-1 text-gray-700 text-sm">
-              <span className="font-semibold">Episodes ordered:</span> 8
-              episodes
+              <span className="font-semibold">Seasons: </span>
+              {show?._embedded?.seasons.length}
             </div>
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Created by:</span>{" "}
@@ -181,55 +191,20 @@ function ShowOverview({ details }: ShowOverview) {
             <div className="mb-1 text-gray-700 text-sm">
               <span className="font-semibold">Official site:</span>{" "}
               <a
-                href={show.officialSite}
+                href={show?.officialSite}
                 className="text-teal-700 underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {show.officialSite || "www.netflix.com"}
+                {show?.officialSite || "www.netflix.com"}
               </a>
             </div>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="flex gap-1">
-                {[...Array(10)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-4 h-4 text-gray-300"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z" />
-                  </svg>
-                ))}
-              </div>
+            <div className="mb-1 text-gray-700 text-sm">
+              <span className="font-semibold">Average Rating:</span>{" "}
               <span className="font-semibold text-gray-700">
-                {show.rating?.average || 8.5}
+                {show?.rating?.average || "N.A."}
               </span>
               <span className="text-gray-500 text-sm">(708 votes)</span>
-            </div>
-          </div>
-          {/* Show Tags */}
-          <div>
-            <h3 className="mb-2 font-semibold text-gray-900 text-xl">
-              Show Tags
-            </h3>
-            <div className="flex flex-wrap gap-2 bg-white p-2 border border-gray-200 rounded">
-              <span className="flex items-center gap-1 bg-green-100 px-2 py-1 rounded font-semibold text-green-700 text-xs">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Tag
-              </span>
             </div>
           </div>
           {/* Extra Details */}

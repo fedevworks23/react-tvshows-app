@@ -4,7 +4,7 @@ import type { AppDispatch, RootState } from "../../../store";
 import { getPopularShows } from "../../../store/tvShowsReducer";
 import { NavLink, useNavigate } from "react-router";
 import { NO_IMAGE } from "../../../Constant/constants";
-import { currentDate } from "../../../utils/formatDate";
+import { currentDate, currentDay } from "../../../utils/formatDate";
 import { timestampToDate } from "../../../utils/timeStampToDate";
 
 type LatestShowDetailsProps = {
@@ -31,7 +31,13 @@ function Latest() {
       dispatch(getPopularShows([currentDate]));
 
     const sortedNewShows = (popularShows as any[])
-      .filter((item) => item?.show?.rating?.average > 7.5)
+      .filter(
+        (item) =>
+          item?.show?.status === "Running" &&
+          item?.show?.rating?.average > 7 &&
+          item?.show?.schedule?.days.includes(currentDay)
+      )
+      .splice(0, 5)
       .map((item) => {
         return {
           id: String(item.show.id),
@@ -58,7 +64,7 @@ function Latest() {
       navigate("/error", { state: { message: error } });
     }
   }, [detailsStatus, error, navigate]);
-  
+
   return (
     <>
       <div className="gap-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5">
