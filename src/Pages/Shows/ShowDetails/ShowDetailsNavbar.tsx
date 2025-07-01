@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router";
-import {
-  getShowDetailsById,
-} from "../../../store/tvShowsReducer";
+import { getShowDetailsById } from "../../../store/tvShowsReducer";
 import type { AppDispatch, RootState } from "../../../store";
 
 function ShowsNavbar() {
@@ -15,21 +13,17 @@ function ShowsNavbar() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { detailsStatus, showDetails } = useSelector(
-    (state: RootState) => state.tvShows
-  );
+  const { showDetails } = useSelector((state: RootState) => state.tvShows);
 
   useEffect(() => {
-    if (
-      (detailsStatus === "idle" && showDetails.id !== Number(id)) ||
-      (detailsStatus === "succeeded" && !Object.entries(showDetails).length)
-    ) {
+    // If Id is not valid then return
+    if (!id) return;
+    // Only fetch if the id is different from the current showDetails.id
+    if (String(showDetails.id) !== String(id)) {
       const currentPath = currentUrl.split("/").pop();
-      dispatch(
-        getShowDetailsById({ id: id ?? "", navMenu: currentPath ?? "" })
-      );
+      dispatch(getShowDetailsById({ id, navMenu: currentPath ?? "" }));
     }
-  }, [id, currentUrl]);
+  }, [id, currentUrl, dispatch, showDetails.id]);
 
   const ShowDetailsLayoutNavbar = [
     {
