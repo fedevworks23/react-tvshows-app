@@ -89,7 +89,7 @@ const LatestShowDetails = ({ item }: LatestShowDetailsProps) => {
             alt={item.name || ""}
             className="w-full object-cover"
           />
-          <div className="flex flex-col flex-1 justify-center bg-gray-500 px-4 py-3">
+          <div className="flex flex-col flex-1 justify-center bg-ss-primary px-4 py-3">
             <div className="mb-1 font-semibold text-[15px] text-white truncate leading-tight">
               {item.name}
             </div>

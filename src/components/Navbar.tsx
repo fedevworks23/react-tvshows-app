@@ -16,7 +16,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="relative flex justify-between items-center bg-[#3F3F3F] shadow px-4 py-3">
+    <nav className="relative flex justify-between items-center bg-ss-primary shadow px-4 py-3">
       {/* Logo */}
       <div className="flex items-center gap-2">
         <span className="font-bold text-yellow-400 text-2xl">

@@ -1,20 +1,13 @@
+@import "./custom-classes.css";
 @import "tailwindcss";
 
 :root {
-  font-family: "Open Sans", "Poppins", sans-serif;
   line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: #060d17;
-  background-color: #ffffffe8;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 .active {
   color: #fdc700;
   border-bottom: 2px solid;

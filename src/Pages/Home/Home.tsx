@@ -11,7 +11,7 @@ function HomePage() {
     <>
       {/* <Slider /> */}
 
-      <div className="my-2.5 text-2xl">Popular shows airing tonight</div>
+      <div className="my-2.5 text-ss-primary text-2xl">Popular shows airing tonight</div>
       <Latest />
     </>
   );

@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+
+:root {
+  font-family: "Inter", "Open Sans", "Poppins", sans-serif;
+  --primary: #0b1016;
+  --secondary: #1976d2;
+  --accent: #f5b041;
+  --background: #f8f9fa;
+  --surface: #ffffff;
+  --text-primary: #22223b;
+  --text-secondary: #4a4e69;
+  --border: #e0e0e0;
+  --error: #d32f2f;
+
+  background-color: var(--background);
+  color: var(--primary);
+}
+
+/* Background color classes */
+.bg-ss-primary {
+  background-color: var(--primary);
+}
+.bg-ss-secondary {
+  background-color: var(--secondary);
+}
+.bg-ss-accent {
+  background-color: var(--accent);
+}
+.bg-ss-background {
+  background-color: var(--background);
+}
+.bg-ss-surface {
+  background-color: var(--surface);
+}
+.bg-ss-error {
+  background-color: var(--error);
+}
+
+/* Text color classes */
+.text-ss-primary {
+  color: var(--primary);
+}
+.text-ss-secondary {
+  color: var(--secondary);
+}
+.text-ss-accent {
+  color: var(--accent);
+}
+.text-ss-background {
+  color: var(--background);
+}
+.text-ss-surface {
+  color: var(--surface);
+}
+.text-ss-error {
+  color: var(--error);
+}
+.text-ss-text-primary {
+  color: var(--text-primary);
+}
+.text-ss-text-secondary {
+  color: var(--text-secondary);
+}
+
+/* Border color classes */
+.border-ss-primary {
+  border-color: var(--primary);
+}
+.border-ss-secondary {
+  border-color: var(--secondary);
+}
+.border-ss-accent {
+  border-color: var(--accent);
+}
+.border-ss-background {
+  border-color: var(--background);
+}
+.border-ss-surface {
+  border-color: var(--surface);
+}
+.border-ss-error {
+  border-color: var(--error);
+}
+.border-ss-border {
+  border-color: var(--border);
+}
