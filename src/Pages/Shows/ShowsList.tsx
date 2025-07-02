@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllShows } from "../../store/tvShowsReducer";
 import type { RootState, AppDispatch } from "../../store";
 import { NO_IMAGE } from "../../Constant/constants";
+import { fetchAllShows } from "../../store/tvShowsThunks";
 
 type ShowsProps = {
   id: number;

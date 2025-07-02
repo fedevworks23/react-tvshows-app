@@ -1,11 +1,11 @@
 import { useEffect, useState, type Key } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store";
-import { getPopularShows } from "../../../store/tvShowsReducer";
 import { NavLink, useNavigate } from "react-router";
 import { NO_IMAGE } from "../../../Constant/constants";
 import { currentDate, currentDay } from "../../../utils/formatDate";
 import { timestampToDate } from "../../../utils/timeStampToDate";
+import { getPopularShows } from "../../../store/tvShowsThunks";
 
 type LatestShowDetailsProps = {
   item: {
