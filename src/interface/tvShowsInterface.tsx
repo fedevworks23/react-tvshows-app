@@ -16,4 +16,7 @@ export interface TvShowsState {
   latestShows: any[];
   webChannels: any[];
   error: any;
+  allShowsFilter: {
+    showType: string
+  }
 }

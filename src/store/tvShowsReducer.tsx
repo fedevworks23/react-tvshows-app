@@ -19,6 +19,9 @@ const initialState: TvShowsState = {
   latestShows: [],
   webChannels: [],
   error: null,
+  allShowsFilter: {
+    showType: "",
+  },
 };
 
 // The tvShows slice
@@ -26,6 +29,14 @@ const tvShowsSlice = createSlice({
   name: "tvShows",
   initialState,
   reducers: {
+    setShowFilters: (
+      state,
+      action: {
+        payload: { name: keyof typeof state.allShowsFilter; value: string };
+      }
+    ) => {
+      state.allShowsFilter[action.payload.name] = action.payload.value;
+    },
     clearShowDetails: (state) => {
       state.detailsStatus = "idle";
       // state.showDetails = {};
@@ -111,5 +122,6 @@ const tvShowsSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { clearShowDetails, clearTvShows } = tvShowsSlice.actions;
+export const { clearShowDetails, clearTvShows, setShowFilters } =
+  tvShowsSlice.actions;
 export default tvShowsSlice.reducer;
