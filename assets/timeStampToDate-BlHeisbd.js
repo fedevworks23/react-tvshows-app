@@ -1,0 +1,1 @@
+const t=new Date;t.getFullYear();String(t.getMonth()+1).padStart(2,"0");String(t.getDate()).padStart(2,"0");const n=new Date().toISOString().split("T")[0],e=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],r=e[t.getDay()],s=a=>new Date(Number(a)*1e3);export{n as a,r as c,s as t};
